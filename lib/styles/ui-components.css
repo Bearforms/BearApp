@@ -1,0 +1,25 @@
+/* Radix UI Select Content */
+[data-radix-select-viewport] {
+  background-color: white;
+}
+
+.select-content {
+  background-color: white;
+}
+
+/* Dropdown Menu Content */
+.dropdown-menu-content {
+  background-color: white;
+}
+
+/* Popover Content */
+.popover-content {
+  background-color: white;
+}
+
+/* Submit Button */
+.form-submit-button {
+  background-color: var(--form-primary);
+  color: white;
+  border-radius: var(--form-radius);
+}

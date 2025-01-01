@@ -1,0 +1,1 @@
+export { ThankYouSettings } from './thank-you-settings';

@@ -1,0 +1,34 @@
+/* Base focus management styles */
+:root {
+  --focus-ring-color: hsl(var(--ring));
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 1px;
+}
+
+/* Hide focus styles by default */
+*:focus {
+  outline: none;
+}
+
+/* Only show focus styles when using keyboard navigation */
+body.using-keyboard *:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* Custom focus styles for form elements */
+body.using-keyboard .form-field input:focus-visible,
+body.using-keyboard .form-field textarea:focus-visible,
+body.using-keyboard .form-field select:focus-visible,
+body.using-keyboard .form-field button:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* Custom focus styles for interactive components */
+body.using-keyboard .interactive:focus-visible {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+  ring: var(--focus-ring-width) solid var(--focus-ring-color);
+  ring-offset: var(--focus-ring-offset);
+}

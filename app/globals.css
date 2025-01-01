@@ -1,0 +1,103 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --radius: 0.5rem;
+  }
+}
+
+/* Import styles */
+@import './styles/focus.css';
+@import './styles/form-theme.css';
+@import './styles/form-typography.css';
+@import './styles/form-fields.css';
+@import './styles/settings-panel.css';
+@import './styles/ui-components.css';
+
+/* Rich Text Editor Styles */
+[contenteditable='true']:empty:before {
+  content: attr(data-placeholder);
+  color: var(--placeholder-color);
+  pointer-events: none;
+}
+
+.prose {
+  max-width: none;
+}
+
+.prose h1 {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  font-size: 2em;
+  font-weight: 700;
+  line-height: 1.2;
+  font-family: var(--form-heading-font), system-ui;
+}
+
+.prose h2 {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  font-size: 1.5em;
+  font-weight: 600;
+  line-height: 1.3333333;
+  font-family: var(--form-heading-font), system-ui;
+}
+
+.prose h3 {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  font-size: 1.25em;
+  font-weight: 600;
+  line-height: 1.6;
+  font-family: var(--form-heading-font), system-ui;
+}
+
+.prose p {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  line-height: 1.75;
+  font-family: var(--form-body-font), system-ui;
+}
+
+.prose ul {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  padding-left: 1.625em;
+  list-style-type: disc;
+  font-family: var(--form-body-font), system-ui;
+}
+
+.prose ol {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  padding-left: 1.625em;
+  list-style-type: decimal;
+  font-family: var(--form-body-font), system-ui;
+}
+
+.prose li {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  font-family: var(--form-body-font), system-ui;
+}

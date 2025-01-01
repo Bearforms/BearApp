@@ -1,0 +1,117 @@
+/* Form field styles */
+.form-field {
+  --field-border: var(--form-border);
+  --field-radius: var(--form-radius);
+  --field-focus-color: var(--form-primary);
+  --field-focus-ring: var(--form-ring);
+}
+
+/* Basic form controls */
+.form-field input,
+.form-field textarea,
+.form-field select,
+.form-field button {
+  border-color: var(--field-border);
+  border-radius: var(--field-radius);
+  transition: border-color 150ms ease;
+}
+
+/* Focus and hover states for form controls */
+.form-field input:focus,
+.form-field textarea:focus,
+.form-field select:focus,
+.form-field button:focus,
+.form-field input:hover,
+.form-field textarea:hover,
+.form-field select:hover {
+  border-color: var(--field-focus-color);
+  outline: none;
+}
+
+/* Select components */
+.form-field .select-trigger,
+.form-field [data-radix-select-trigger] {
+  border-color: var(--field-border);
+  border-radius: var(--field-radius);
+  transition: border-color 150ms ease;
+}
+
+.form-field .select-trigger:hover,
+.form-field [data-radix-select-trigger]:hover,
+.form-field .select-trigger:focus,
+.form-field [data-radix-select-trigger]:focus {
+  border-color: var(--field-focus-color);
+}
+
+.form-field .select-content,
+.form-field [data-radix-select-content] {
+  border-radius: var(--field-radius);
+}
+
+/* Date and Time buttons */
+.form-field .date-field_button,
+.form-field .time-field_button {
+  border-color: var(--field-border);
+  border-radius: var(--field-radius);
+  transition: border-color 150ms ease;
+}
+
+.form-field .date-field_button:hover,
+.form-field .time-field_button:hover,
+.form-field .date-field_button:focus,
+.form-field .time-field_button:focus {
+  border-color: var(--field-focus-color);
+}
+
+/* Checkbox */
+.form-field .checkbox {
+  border-color: var(--field-border);
+  border-radius: calc(var(--field-radius) * 0.25);
+  transition: border-color 150ms ease;
+}
+
+.form-field .checkbox:hover,
+.form-field .checkbox:focus {
+  border-color: var(--field-focus-color);
+}
+
+/* Radio */
+.form-field .radio-group-item {
+  border-color: var(--field-border);
+  transition: border-color 150ms ease;
+}
+
+.form-field .radio-group-item:hover,
+.form-field .radio-group-item:focus {
+  border-color: var(--field-focus-color);
+}
+
+/* Rating buttons */
+.form-field .star-rating_button,
+.form-field .number-rating_button {
+  border-color: var(--field-border);
+  border-radius: var(--field-radius);
+  transition: border-color 150ms ease;
+}
+
+.form-field .star-rating_button:hover,
+.form-field .number-rating_button:hover,
+.form-field .star-rating_button:focus,
+.form-field .number-rating_button:focus {
+  border-color: var(--field-focus-color);
+}
+
+/* File upload */
+.form-field .file-input {
+  border-color: var(--field-border);
+  border-radius: var(--field-radius);
+  transition: border-color 150ms ease;
+}
+
+.form-field .file-input:hover,
+.form-field .file-input:focus {
+  border-color: var(--field-focus-color);
+}
+div .header:empty {
+  margin-bottom: 0;
+}

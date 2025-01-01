@@ -1,0 +1,23 @@
+/* Base styles for UI components */
+.ui-component {
+  --component-bg: hsl(var(--background));
+  --component-border: hsl(var(--border));
+  --component-radius: var(--radius);
+  --component-ring: hsl(var(--ring));
+}
+
+/* Dropdown and Select components */
+.select-content,
+.dropdown-menu-content,
+.popover-content {
+  background-color: var(--component-bg);
+  border: 1px solid var(--component-border);
+  border-radius: var(--component-radius);
+}
+
+/* Form elements */
+.form-control {
+  border-color: var(--component-border);
+  border-radius: var(--component-radius);
+  background-color: var(--component-bg);
+}

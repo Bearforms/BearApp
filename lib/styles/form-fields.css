@@ -1,0 +1,64 @@
+/* Form field styles */
+.form-field {
+  --field-border: var(--form-border);
+  --field-radius: var(--form-radius);
+}
+
+/* Basic form controls */
+.form-field input,
+.form-field textarea,
+.form-field select,
+.form-field button {
+  border-color: var(--field-border);
+  border-radius: var(--field-radius);
+  color: var(--form-text);
+}
+
+/* Select components */
+.form-field .select-trigger,
+.form-field [data-radix-select-trigger] {
+  border-color: var(--field-border);
+  border-radius: var(--field-radius);
+}
+
+.form-field .select-content,
+.form-field [data-radix-select-content] {
+  border-radius: var(--field-radius);
+}
+
+/* Date button */
+.form-field .date-field_button {
+  border-color: var(--field-border);
+  border-radius: var(--field-radius);
+}
+
+/* Time button */
+.form-field .time-field_button {
+  border-color: var(--field-border);
+  border-radius: var(--field-radius);
+}
+
+/* Checkbox */
+.form-field .checkbox {
+  border-color: var(--field-border);
+  border-radius: calc(var(--field-radius) * 0.25);
+}
+
+/* Radio */
+.form-field .radio-group-item {
+  border-color: var(--field-border);
+}
+
+/* Rating buttons */
+.form-field .star-rating_button,
+.form-field .number-rating_button {
+  border-color: var(--field-border);
+  border-radius: var(--field-radius);
+}
+
+
+/* File upload */
+.form-field .file-input {
+  border-color: var(--field-border);
+  border-radius: var(--field-radius);
+}

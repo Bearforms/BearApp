@@ -1,0 +1,25 @@
+/* Settings panel styles */
+.settings-panel {
+  background-color: hsl(var(--background));
+}
+
+.settings-panel input,
+.settings-panel textarea,
+.settings-panel select,
+.settings-panel button {
+  background-color: hsl(var(--background));
+  border-color: hsl(var(--border));
+  border-radius: var(--radius);
+}
+
+.settings-panel .select-trigger {
+  background-color: hsl(var(--background));
+  border-color: hsl(var(--border));
+  border-radius: var(--radius);
+}
+
+.settings-panel .select-content {
+  background-color: white;
+  border-color: hsl(var(--border));
+  border-radius: var(--radius);
+}

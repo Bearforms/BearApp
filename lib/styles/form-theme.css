@@ -1,0 +1,28 @@
+/* Form theme variables */
+.form-theme {
+  --form-primary: var(--theme-primary, #2563eb);
+  --form-background: var(--theme-background, #ffffff);
+  --form-text: var(--theme-text, #171717);
+  --form-text-secondary: var(--theme-text-secondary, #6b7280);
+  --form-border: var(--theme-border, #e2e8f0);
+  --form-radius: var(--theme-radius, 0.375rem);
+  --form-spacing: var(--theme-spacing, 1.5rem);
+
+  background-color: var(--form-background);
+  color: var(--form-text);
+}
+
+/* Form description */
+.form-description {
+  color: var(--form-text-secondary);
+}
+
+/* Helper text */
+.form-field .helper-text {
+  color: var(--form-text-secondary);
+}
+
+/* Thank you message */
+.thank-you-message {
+  color: var(--form-text-secondary);
+}

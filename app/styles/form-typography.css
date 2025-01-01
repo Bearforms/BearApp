@@ -1,0 +1,20 @@
+/* Form typography styles */
+.form-theme .form-title,
+.form-theme .form-heading,
+.form-theme .form-field-label,
+.form-theme .thank-you-heading {
+  color: var(--form-text);
+}
+
+.form-theme .form-description,
+.form-theme .thank-you-description {
+  color: var(--form-text);
+}
+
+.form-body {
+  font-family: var(--form-body-font), system-ui;
+}
+
+.form-heading {
+  font-family: var(--form-heading-font), system-ui;
+}

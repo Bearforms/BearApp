@@ -1,0 +1,1 @@
+// This file can be deleted since we're removing the hidden badge functionality
