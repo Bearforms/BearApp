@@ -4,6 +4,7 @@ import { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { ImagePlus, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { toast } from '../ui/use-toast';
 
 interface FormLogoProps {
   logo?: string;
@@ -23,7 +24,7 @@ export function FormLogo({ logo, onLogoChange }: FormLogoProps) {
         toast({
           title: 'File too large',
           description: 'Please select an image under 5MB',
-          variant: 'destructive',
+          // variant: 'destructive',
         });
         return;
       }

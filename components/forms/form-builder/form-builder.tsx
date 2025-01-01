@@ -1,9 +1,8 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { FormField } from '@/types/form';
+import { FormField, ThemeSettings as ThemeSettingsType } from '@/types/form';
 import { ButtonSettings } from '@/types/button';
-import { useThemeStore } from '@/stores/theme-store';
 import { FormHeader } from './form-header';
 import { FormContent } from './form-content';
 import { FormFieldSettings } from '../settings/field-settings/field-settings';
@@ -54,7 +53,25 @@ export function FormBuilder({
   const [showButtonSettings, setShowButtonSettings] = useState(false);
   const formBuilderRef = useRef<HTMLDivElement>(null);
   const settingsPanelRef = useRef<HTMLDivElement>(null);
-  const { theme } = useThemeStore();
+  const theme = {
+    colors: {
+      primary: {
+        name: 'Blue',
+        value: '#2563eb',
+        textColor: '#ffffff',
+      },
+      background: '#ffffff',
+      text: '#0f172a',
+      textSecondary: '#6b7280',
+      border: '#e2e8f0',
+    },
+    fonts: {
+      heading: 'Inter',
+      body: 'Inter',
+    },
+    borderRadius: 'md',
+    spacing: 'comfortable',
+  }
 
   return (
     <div className="relative h-full" ref={formBuilderRef}>
@@ -100,11 +117,12 @@ export function FormBuilder({
           <FormContent
             fields={fields}
             onFieldsChange={onFieldsChange || (() => {})}
-            onFieldClick={setSelectedField}
+            onFieldSelect={(field) => setSelectedField(field)}
             selectedFieldId={selectedField?.id}
             buttonSettings={buttonSettings}
             onButtonSettingsChange={onButtonSettingsChange}
             onButtonSettingsOpen={() => setShowButtonSettings(true)}
+            onThankYouSettingsOpen={() => {}}
           />
         </div>
       </div>
@@ -134,7 +152,7 @@ export function FormBuilder({
       {isThemeSettingsOpen && (
         <div className="absolute top-5 bottom-5 right-5 w-[340px] rounded-md border-[0.5px] border-neutral-200 shadow-lg bg-white overflow-hidden">
           <ThemeSettings
-            settings={themeSettings}
+            settings={themeSettings as ThemeSettingsType}
             onSettingsChange={onThemeSettingsChange}
             onClose={() => onThemeSettingsOpenChange(false)}
           />
@@ -149,6 +167,7 @@ export function FormBuilder({
                 label: 'Submit',
                 size: 'default',
                 fullWidth: false,
+                variant: 'default',
               }
             }
             onSettingsChange={onButtonSettingsChange || (() => {})}

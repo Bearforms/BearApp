@@ -30,7 +30,7 @@ export function ThankYouPage({ settings, onClose }: ThankYouPageProps) {
 
   return (
     <div className="space-y-6">
-      <HeadingField field={headingField} preview />
+      <HeadingField field={headingField as any} preview />
       <ParagraphField field={paragraphField} preview />
       <div className="flex gap-3">
         <Button variant="outline" onClick={onClose}>

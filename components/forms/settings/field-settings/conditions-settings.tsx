@@ -1,6 +1,7 @@
 'use client';
 
 import { FormField } from '@/types/form';
+import {  ConditionOperator } from '@/types/conditions';
 import { SettingsSection } from './settings-section';
 import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
@@ -40,7 +41,7 @@ export function ConditionsSettings({
     const newCondition = {
       id: Math.random().toString(36).slice(2),
       fieldId: '',
-      operator: '',
+      operator: 'equals' as ConditionOperator,
       value: '',
     };
 

@@ -54,7 +54,7 @@ export function ThemedFormPreview({ className, ...props }: ThemedFormPreviewProp
         }
       `}</style>
       
-      <FormPreview {...props} />
+      <FormPreview {...props as any} />
     </div>
   );
 }

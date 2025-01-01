@@ -9,7 +9,7 @@ interface IntegrationIconProps {
 }
 
 export function IntegrationIcon({ integration, className = "h-5 w-5 text-neutral-500" }: IntegrationIconProps) {
-  const Icon = Icons[integration.iconName as keyof typeof Icons];
+  const Icon = Icons[integration.iconName as keyof typeof Icons] as React.ElementType;
 
   return (
     <div className="h-10 w-10 rounded-md bg-neutral-100 flex items-center justify-center">

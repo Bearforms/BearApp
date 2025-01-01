@@ -13,7 +13,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useFieldCondition } from './field-conditions/use-field-condition';
 import {
   getAvailableOperators,
   getFieldValues,
@@ -45,9 +44,9 @@ export function ConditionsSettings({
     const newCondition = {
       id: Math.random().toString(36).slice(2),
       fieldId: '',
-      operator: '',
+      operator: 'equals',
       value: '',
-    };
+    } as any;
 
     onFieldUpdate({
       ...field,

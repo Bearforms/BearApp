@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { HeadingField } from '../fields/heading-field';
 import { ParagraphField } from '../fields/paragraph-field';
 import { Button } from '@/components/ui/button';
-import { ThankYouSettings, ThemeSettings } from '@/types/form';
+import { FormField, ThankYouSettings, ThemeSettings } from '@/types/form';
 import { Settings2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -71,7 +71,7 @@ export function ThankYouPreview({
         <div className="space-y-4">
           <div className="thank-you-heading">
             <HeadingField
-              field={headingField}
+              field={headingField as FormField}
               preview
               headingFont={themeSettings?.fonts?.heading}
             />

@@ -52,7 +52,7 @@ export function NewFormModal({ open, onOpenChange }: NewFormModalProps) {
     };
 
     try {
-      addForm(newForm);
+      addForm(newForm as any);
       router.push(`/edit/${formId}`);
     } finally {
       setName(''); // Reset the input

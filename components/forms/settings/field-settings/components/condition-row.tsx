@@ -10,7 +10,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { CONDITION_OPERATORS, CONDITION_VALUES } from '../constants';
+// import { CONDITION_OPERATORS, CONDITION_VALUES } from '../constants';
+
+const CONDITION_OPERATORS = [
+  { label: 'is', value: 'is' },
+  { label: 'is not', value: 'is_not' },
+  { label: 'contains', value: 'contains' },
+  { label: 'does not contain', value: 'does_not_contain' },
+];
+
+const CONDITION_VALUES = [
+  { label: 'Value 1', value: 'value1' },
+  { label: 'Value 2', value: 'value2' },
+  { label: 'Value 3', value: 'value3' },
+];
 
 interface ConditionRowProps {
   condition: {

@@ -61,7 +61,7 @@ export function FieldSettingsTab({ field, onFieldUpdate }: FieldSettingsTabProps
       )}
 
       {isPageBreak && (
-        <PageBreakSettings field={field} onFieldUpdate={onFieldUpdate} />
+        <PageBreakSettings fields={[]} field={field} onFieldUpdate={onFieldUpdate} />
       )}
     </div>
   );

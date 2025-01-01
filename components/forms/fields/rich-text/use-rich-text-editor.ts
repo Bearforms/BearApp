@@ -30,8 +30,8 @@ export function useRichTextEditor(
     return document.queryCommandState(format);
   }, []);
 
-  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
-    if (e.metaKey || e.ctrlKey) {
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {    
+    if (e.metaKey || e.ctrlKey ) {
       if (e.altKey) {
         switch (e.key) {
           case '0':

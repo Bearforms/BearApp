@@ -1,7 +1,7 @@
 'use client';
 
 interface SettingsSectionProps {
-  title: string;
+  title?: string;
   description?: string;
   children: React.ReactNode;
 }
@@ -14,7 +14,7 @@ export function SettingsSection({
   return (
     <div className="space-y-2">
       <div className="space-y-1">
-        <h3 className="text-sm font-medium text-neutral-900">{title}</h3>
+        {title && <h3 className="text-sm font-medium text-neutral-900">{title}</h3>}
         {description && (
           <p className="text-sm text-muted-foreground leading-relaxed">
             {description}

@@ -21,8 +21,8 @@ interface ButtonSettingsProps {
   onOpenChange: (open: boolean) => void;
 }
 
-export function ButtonSettings({ 
-  settings, 
+export function ButtonSettings({
+  settings,
   onSettingsChange,
   open,
   onOpenChange
@@ -56,8 +56,8 @@ export function ButtonSettings({
             <Label>Variant</Label>
             <Select
               value={settings.variant}
-              onValueChange={(value: ButtonSettingsType["variant"]) => 
-                onSettingsChange({ ...settings, variant: value })
+              onValueChange={(value: ButtonSettingsType["variant"]) =>
+                onSettingsChange({ ...settings, variant: value || "default" })
               }
             >
               <SelectTrigger>
@@ -76,7 +76,7 @@ export function ButtonSettings({
             <Label>Size</Label>
             <Select
               value={settings.size}
-              onValueChange={(value: ButtonSettingsType["size"]) => 
+              onValueChange={(value: ButtonSettingsType["size"]) =>
                 onSettingsChange({ ...settings, size: value })
               }
             >

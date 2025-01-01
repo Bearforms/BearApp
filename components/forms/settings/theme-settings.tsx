@@ -9,16 +9,16 @@ import { ColorSettings } from './theme-settings/color-settings';
 import { TypographySettings } from './theme-settings/typography-settings';
 import { LayoutSettings } from './theme-settings/layout-settings';
 import { SectionTitle } from './theme-settings/section-title';
-import { ThemeSettings } from '@/types/form';
+import { ThemeSettings as ThemeSettingsType } from '@/types/form';
 import { PanelLayout } from './panel-layout';
 
 interface ThemeSettingsProps {
-  settings?: ThemeSettings;
-  onSettingsChange?: (settings: ThemeSettings) => void;
+  settings?: ThemeSettingsType;
+  onSettingsChange?: (settings: ThemeSettingsType) => void;
   onClose: () => void;
 }
 
-const defaultSettings: ThemeSettings = {
+const defaultSettings: ThemeSettingsType = {
   colors: {
     primary: {
       name: 'Blue',
@@ -49,7 +49,7 @@ export function ThemeSettings({
   const [isUploading, setIsUploading] = useState(false);
 
   // Merge provided settings with defaults
-  const mergedSettings: ThemeSettings = {
+  const mergedSettings: ThemeSettingsType = {
     ...defaultSettings,
     ...settings,
     colors: {
@@ -67,7 +67,7 @@ export function ThemeSettings({
       toast({
         title: 'File too large',
         description: 'Please select an image under 5MB',
-        variant: 'destructive',
+        // variant: 'destructive',
       });
       return;
     }

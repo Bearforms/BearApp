@@ -23,6 +23,7 @@ const defaultSettings: ButtonSettings = {
   label: 'Submit',
   size: 'default',
   fullWidth: false,
+  variant: 'default',
 };
 
 export function FormSubmitButton({

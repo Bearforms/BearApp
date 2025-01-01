@@ -48,8 +48,8 @@ export default function NewFormPage() {
             onShareOpenChange={setIsShareOpen}
             fields={fields}
             onFieldsChange={setFields}
-            themeSettings={themeSettings}
-            onThemeSettingsChange={setThemeSettings}
+            themeSettings={themeSettings as any}
+            onThemeSettingsChange={setThemeSettings as any}
           />
 
           <FormPreview
@@ -60,7 +60,7 @@ export default function NewFormPage() {
             fields={fields}
             name="New Form"
             formId="new"
-            themeSettings={themeSettings}
+            themeSettings={themeSettings  as any}
           />
         </div>
       </main>

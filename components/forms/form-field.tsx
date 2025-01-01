@@ -21,7 +21,7 @@ import { URLField } from './fields/url-field';
 import { PageBreak } from './fields/page-break';
 import { CheckboxField } from './fields/checkbox-field';
 
-const components = {
+const components: { [key: string]: React.ComponentType<any> } = {
   text: TextField,
   textarea: TextareaField,
   email: EmailField,

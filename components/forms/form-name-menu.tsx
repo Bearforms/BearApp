@@ -80,7 +80,7 @@ export function FormNameMenu({ formId, name }: FormNameMenuProps) {
       toast({
         title: 'Error',
         description: 'Failed to copy link',
-        variant: 'destructive',
+        // variant: 'destructive',
       });
     }
   };

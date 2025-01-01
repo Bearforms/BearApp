@@ -1,5 +1,8 @@
 'use client';
 
+import { Sidebar } from '../layout/sidebar';
+import { SettingsHeader } from './settings-header';
+
 // ... rest of imports remain the same
 
 export default function SettingsPage() {

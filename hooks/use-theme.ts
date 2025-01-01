@@ -1,10 +1,27 @@
 "use client";
 
-import { useThemeStore } from "@/stores/theme-store";
+// import { useThemeStore } from "@/stores/theme-store";
 import { cn } from "@/lib/utils";
 
 export function useTheme() {
-  const { theme } = useThemeStore();
+  // const { theme } = useThemeStore();
+  type Spacing = "compact" | "comfortable" | "spacious";
+  type BorderRadius = "none" | "sm" | "md" | "lg" | "full";
+
+  const theme: { spacing: Spacing; borderRadius: BorderRadius; colors: { primary: { value: string }; background: string; text: string; border: string }; fonts: { heading: string; body: string } } = {
+    spacing: "comfortable",
+    borderRadius: "md",
+    colors: {
+      primary: { value: "#2563EB" },
+      background: "#F9FAFB",
+      text: "#1E293B",
+      border: "#D1D5DB"
+    },
+    fonts: {
+      heading: "Inter",
+      body: "Inter"
+    }
+  };
 
   const getFieldClasses = () => {
     const spacingClasses = {

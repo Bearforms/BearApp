@@ -8,6 +8,7 @@ import { ParagraphField } from '@/components/forms/fields/paragraph-field';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+import { FormField } from '@/types/form';
 
 export default function ThankYouPage() {
   const params = useParams();
@@ -54,7 +55,7 @@ export default function ThankYouPage() {
         <div className="flex-1 overflow-y-auto">
           <div className="max-w-[640px] mx-auto px-5 py-12">
             <div className="space-y-6">
-              <HeadingField field={headingField} preview />
+              <HeadingField field={headingField as FormField} preview />
               <ParagraphField field={paragraphField} preview />
               <div className="pt-4">
                 <Link href="/">

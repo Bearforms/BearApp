@@ -1,4 +1,6 @@
+import { ButtonSettings } from './button';
 import { ConditionSettings } from './conditions';
+import { StepConditionSettings } from './step-conditions';
 
 export interface FormFieldSettings {
   width?: 'full' | 'half';
@@ -17,6 +19,9 @@ export interface FormFieldSettings {
   stepTitle?: string;
   stepDescription?: string;
   checkboxText?: string;
+  clearable?: boolean;
+  searchable?: boolean;
+
 }
 
 export interface FormField {
@@ -39,7 +44,7 @@ export interface FormField {
     label: string;
     value: string;
   }>;
-  settings?: FormFieldSettings & ConditionSettings;
+  settings?: FormFieldSettings & ConditionSettings & StepConditionSettings;
 }
 
 export interface ThemeSettings {

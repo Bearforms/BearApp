@@ -51,7 +51,7 @@ export function CoverSettings({
       {coverType === 'color' && (
         <ColorPicker
           label="Cover color"
-          description="Choose a background color for your form cover"
+          placeholder="Choose a background color for your form cover"
           value={coverColor}
           onChange={onCoverColorChange}
         />

@@ -3,8 +3,10 @@
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { FormField } from "@/types/form";
-import { Toggle } from "./toggle";
-import { SettingsSection } from "./settings-section";
+import { SettingsSection } from '../settings/field-settings/settings-section';
+import { Toggle } from '../settings/field-settings/toggle';
+// import { Toggle } from "./toggle";
+// import { SettingsSection } from "./settings-section";
 
 interface FileSettingsProps {
   field: FormField;

@@ -73,7 +73,7 @@ export function FormPreviewContent({
       <ScrollArea className="flex-1">
         <FormLayout themeSettings={themeSettings}>
           <ThankYouContent
-            settings={thankYouSettings}
+            settings={thankYouSettings || {} as any}
             themeSettings={themeSettings}
           />
         </FormLayout>
@@ -104,7 +104,7 @@ export function FormPreviewContent({
                 <FormPreviewField
                   key={field.id}
                   field={field}
-                  themeSettings={themeSettings}
+                  themeSettings={themeSettings || {} as any}
                   preview={true}
                   value={formData[field.id]}
                   onChange={(value) => {

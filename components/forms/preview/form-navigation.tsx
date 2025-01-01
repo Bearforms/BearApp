@@ -2,8 +2,9 @@
 
 import { Button } from '@/components/ui/button';
 import { FormSubmitButton } from '../form-submit-button';
-import { ButtonSettings, ThemeSettings } from '@/types/form';
+import { ThemeSettings } from '@/types/form';
 import { ArrowLeft } from 'lucide-react';
+import { ButtonSettings } from '@/types/button';
 
 interface FormNavigationProps {
   currentStep: number;

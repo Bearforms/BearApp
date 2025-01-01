@@ -25,6 +25,7 @@ const defaultButtonSettings: ButtonSettingsType = {
   label: 'Submit',
   size: 'default',
   fullWidth: false,
+  variant: 'primary',
 };
 
 interface FormBuilderProps {
@@ -164,7 +165,7 @@ export function FormBuilder({
 
             <FormContent
               fields={fields}
-              onFieldsChange={onFieldsChange}
+              onFieldsChange={onFieldsChange || (() => {})}
               selectedFieldId={selectedField?.id}
               onFieldSelect={setSelectedField}
               buttonSettings={buttonSettings}
@@ -201,7 +202,7 @@ export function FormBuilder({
         <div className="absolute top-5 bottom-5 right-5 w-[340px] rounded-md border-[0.5px] border-neutral-200 shadow-lg bg-white overflow-hidden">
           <ButtonSettings
             settings={buttonSettings}
-            onSettingsChange={onButtonSettingsChange}
+            onSettingsChange={onButtonSettingsChange as any}
             open={showButtonSettings}
             onOpenChange={setShowButtonSettings}
             themeSettings={mergedThemeSettings}
@@ -213,7 +214,7 @@ export function FormBuilder({
         <div className="absolute top-5 bottom-5 right-5 w-[340px] rounded-md border-[0.5px] border-neutral-200 shadow-lg bg-white overflow-hidden">
           <ThankYouSettings
             settings={thankYouSettings}
-            onSettingsChange={onThankYouSettingsChange}
+            onSettingsChange={onThankYouSettingsChange as any}
             onClose={() => setShowThankYouSettings(false)}
             themeSettings={mergedThemeSettings}
           />

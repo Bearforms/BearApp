@@ -1,6 +1,18 @@
 "use client";
 
 // ... rest of imports
+interface SaveTemplateModalProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  fields: any[];
+  themeSettings?: {
+    coverType?: string;
+    showLogo?: boolean;
+    coverColor?: string;
+    coverImage?: string;
+    logo?: string;
+  };
+}
 
 export function SaveTemplateModal({ 
   open, 
@@ -8,36 +20,11 @@ export function SaveTemplateModal({
   fields,
   themeSettings
 }: SaveTemplateModalProps) {
-  // ... rest of component code
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!name.trim() || !categoryId) return;
+  return (
+    <div>
+      {/* rest of the component */}
+    </div>
+  )
 
-    const template = {
-      id: nanoid(),
-      name: name.trim(),
-      description: description.trim(),
-      categoryId,
-      fields,
-      themeSettings: {
-        coverType: themeSettings?.coverType || 'none',
-        showLogo: themeSettings?.showLogo ?? true,
-        coverColor: themeSettings?.coverColor || "#f3f4f6",
-        coverImage: themeSettings?.coverImage || "",
-        logo: themeSettings?.logo || ""
-      }
-    };
-
-    addTemplate(template);
-    onOpenChange(false);
-    setName("");
-    setDescription("");
-    setCategoryId("");
-
-    toast({ description: "Template saved" });
-  };
-
-  // ... rest of component code
 }

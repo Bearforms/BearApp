@@ -17,7 +17,7 @@ const dummyPreferences = {
   emailNotifications: true,
   formSubmissionAlerts: true,
   weeklyDigest: false,
-  theme: 'system',
+  theme: 'light',
   language: 'en'
 };
 

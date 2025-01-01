@@ -55,7 +55,9 @@ export function CustomRangePicker({
       <Calendar
         mode="range"
         selected={dateRange}
-        onSelect={setDateRange}
+        onSelect={value => {
+          setDateRange(value?.to ? value as any : undefined);
+        }}
         numberOfMonths={2}
         defaultMonth={dateRange?.from}
       />

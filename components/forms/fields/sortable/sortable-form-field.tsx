@@ -4,7 +4,7 @@ import { FormField as IFormField } from '@/types/form';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { cn } from '@/lib/utils';
-import { FormField } from '../form-field';
+import { FormField } from '../../form-field';
 import { FieldContainer } from '../field-container';
 import { SortableFieldActions } from './sortable-field-actions';
 
@@ -59,7 +59,7 @@ export function SortableFormField({
       >
         <FormField
           field={field}
-          onFieldChange={onFieldChange}
+          onFieldChange={onFieldChange as any}
           preview={false}
           themeSettings={themeSettings}
         />

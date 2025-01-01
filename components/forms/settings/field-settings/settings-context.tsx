@@ -5,7 +5,7 @@ import { createContext, useContext, useCallback, useState } from 'react';
 interface SettingsContextType {
   isOpen: boolean;
   closePanel: () => void;
-  preventClose: () => void;
+  preventClose: (e: React.MouseEvent) => void;
   isSelectOpen: boolean;
   setIsSelectOpen: (open: boolean) => void;
 }
@@ -40,10 +40,10 @@ export function SettingsProvider({ children, isOpen, onClose }: SettingsProvider
   }, []);
 
   return (
-    <SettingsContext.Provider 
-      value={{ 
-        isOpen, 
-        closePanel, 
+    <SettingsContext.Provider
+      value={{
+        isOpen,
+        closePanel,
         preventClose,
         isSelectOpen,
         setIsSelectOpen

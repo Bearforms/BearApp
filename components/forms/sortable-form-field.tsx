@@ -67,7 +67,7 @@ export function SortableFormField({
       >
         <FormField
           field={field}
-          onFieldChange={onFieldChange}
+          onFieldChange={onFieldChange as any}
           preview={false}
           themeSettings={themeSettings}
         />

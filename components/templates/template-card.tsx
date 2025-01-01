@@ -9,6 +9,7 @@ import { FormPreviewThumbnail } from '@/components/forms/form-preview-thumbnail'
 import { Copy, Eye } from 'lucide-react';
 import { TemplatePreview } from './template-preview';
 import { templateCategories } from '@/lib/constants/form-templates';
+import { Form } from '@/types/form';
 
 interface TemplateCardProps {
   template: {
@@ -50,7 +51,7 @@ export function TemplateCard({ template }: TemplateCardProps) {
       },
     };
 
-    addForm(newForm);
+    addForm(newForm as Form);
     router.push(`/edit/${newForm.id}`);
   };
 

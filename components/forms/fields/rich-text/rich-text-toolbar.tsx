@@ -23,7 +23,7 @@ import { TOOLBAR_ITEMS } from './toolbar-config';
 
 interface RichTextToolbarProps {
   onFormat: (command: string, value?: string) => void;
-  isFormatActive: (format: string) => boolean;
+  isFormatActive: (format: string) => boolean | null;
   disabled?: boolean;
 }
 

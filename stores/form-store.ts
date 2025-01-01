@@ -74,7 +74,7 @@ export const useFormStore = create<FormState>()(
               0.7
             );
             processedUpdates.themeSettings = {
-              ...processedUpdates.themeSettings,
+              ...(processedUpdates.themeSettings as ThemeSettings),
               coverImage: compressed,
             };
           }
@@ -87,7 +87,7 @@ export const useFormStore = create<FormState>()(
               0.7
             );
             processedUpdates.themeSettings = {
-              ...processedUpdates.themeSettings,
+              ...(processedUpdates.themeSettings as ThemeSettings),
               logo: compressed,
             };
           }

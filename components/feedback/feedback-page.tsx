@@ -1,5 +1,8 @@
 "use client";
 
+import { Sidebar } from '../layout/sidebar';
+import { FeedbackHeader } from './feedback-header';
+
 // ... rest of imports remain the same
 
 export default function FeedbackPage() {

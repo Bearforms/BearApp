@@ -38,7 +38,7 @@ export function useGoogleFonts(...fontFamilies: string[]) {
     };
 
     // Load unique fonts
-    const uniqueFonts = [...new Set(fontFamilies)];
+    const uniqueFonts = Array.from(new Set(fontFamilies));
     uniqueFonts.forEach(loadFont);
 
     // Cleanup function

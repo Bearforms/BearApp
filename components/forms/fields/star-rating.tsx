@@ -50,11 +50,11 @@ export function StarRatingField({
         {starValues.map((starValue) => {
           const isHalfStar = allowHalf && starValue % 1 !== 0;
           const starNumber = Math.ceil(starValue);
-          const isFilled = (hover || value) >= starValue;
+          const isFilled = (hover || (value ?? 0)) >= starValue;
           const isHalfFilled =
             allowHalf &&
-            (hover || value) >= starValue - 0.5 &&
-            (hover || value) < starValue;
+            (hover || (value ?? 0)) >= starValue - 0.5 &&
+            (hover || (value ?? 0)) < starValue;
 
           return (
             <button
@@ -90,10 +90,10 @@ export function StarRatingField({
                   isFilled
                     ? 'text-[var(--theme-primary)] fill-[var(--theme-primary)]'
                     : isHalfFilled
-                    ? 'text-[var(--theme-primary)] fill-[url(#half)]'
-                    : error
-                    ? 'text-red-500'
-                    : 'text-[var(--theme-border)]'
+                      ? 'text-[var(--theme-primary)] fill-[url(#half)]'
+                      : error
+                        ? 'text-red-500'
+                        : 'text-[var(--theme-border)]'
                 )}
                 strokeWidth={1.5}
               />

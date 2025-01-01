@@ -103,9 +103,9 @@ export function FormBuilderHeader({
           <FormNameMenu
             formId={params?.id as string}
             name={form?.name || 'New form'}
-            onNameChange={handleNameChange}
-            onDuplicate={handleDuplicate}
-            onDelete={handleDelete}
+            // onNameChange={handleNameChange}
+            // onDuplicate={handleDuplicate}
+            // onDelete={handleDelete}
           />
         </div>
       </div>

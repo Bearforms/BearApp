@@ -94,7 +94,7 @@ export function DropdownSettings({ field, onFieldUpdate }: DropdownSettingsProps
                 ...field,
                 settings: {
                   ...field.settings,
-                  clearable: checked,
+                  clearable: !!checked,
                 },
               })
             }

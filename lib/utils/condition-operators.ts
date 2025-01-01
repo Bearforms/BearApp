@@ -3,9 +3,9 @@
 import { ConditionOperator } from '@/types/conditions';
 
 export function getAvailableOperators(fieldType: string): { value: ConditionOperator; label: string }[] {
-  const baseOperators = [
-    { value: 'equals', label: 'equals' },
-    { value: 'not_equals', label: 'does not equal' }
+  const baseOperators: { value: ConditionOperator; label: string }[] = [
+    { value: 'equals' as ConditionOperator, label: 'equals' },
+    { value: 'not_equals' as ConditionOperator, label: 'does not equal' }
   ];
 
   switch (fieldType) {

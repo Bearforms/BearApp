@@ -99,7 +99,7 @@ export function FormContent({
 
       <div className="mb-16">
         <ThankYouPreview
-          settings={thankYouSettings}
+          settings={thankYouSettings || {} as ThankYouSettings} 
           onEdit={onThankYouSettingsOpen}
           themeSettings={themeSettings}
         />

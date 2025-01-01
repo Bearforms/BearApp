@@ -14,14 +14,17 @@ const styleConfig = {
   inline: {
     icon: LayoutTemplate,
     title: 'Inline',
+    description: 'Embed the form directly on your website.',
   },
   fullscreen: {
     icon: Maximize2,
     title: 'Fullscreen',
+    description: 'Display the form in fullscreen mode.',
   },
   modal: {
     icon: Maximize,
     title: 'Modal',
+    description: 'Display the form in a modal popup.',
   },
 };
 
