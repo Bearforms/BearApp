@@ -1,10 +1,10 @@
 'use client';
 
-import { Workspace } from '@/types/workspace';
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { WorkspaceIcon } from './workspace-icon';
-import { Check } from 'lucide-react';
+import { Box, Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Workspace } from '@/types/supabase';
 
 interface WorkspaceItemProps {
   workspace: Workspace;
@@ -21,8 +21,8 @@ export function WorkspaceItem({ workspace, isActive, onClick }: WorkspaceItemPro
       )}
       onClick={onClick}
     >
-      <div className="flex items-center gap-2 flex-1 min-w-0">
-        <WorkspaceIcon workspace={workspace} />
+      <div className="flex items-center truncate gap-2 flex-1 min-w-0">
+        <Box className="h-5 w-5 text-neutral-500" strokeWidth={2} />
         <span className="text-sm truncate">{workspace.name}</span>
       </div>
       {isActive && (
