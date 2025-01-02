@@ -8,11 +8,11 @@ export const metadata: Metadata = {
   description: 'Build and manage forms easily',
 };
 
-export default function RootLayout({
+export default async  function RootLayout({
   children,
 }: {
   children: React.ReactNode;
-}) {
+  }) {
   return (
     <html lang="en" suppressHydrationWarning className="light">
       <body suppressHydrationWarning>

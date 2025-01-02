@@ -16,11 +16,13 @@ import { WorkspaceIcon } from './workspace-icon';
 import { WorkspaceItem } from './workspace-item';
 import { cn } from '@/lib/utils';
 import { useSidebarStore } from '@/stores/sidebar-store';
+import { useWorkspaces } from '@/hooks/use-workspaces';
 
 export function WorkspaceDropdown() {
-  const { workspaces, activeWorkspace, setActiveWorkspace } =
-    useWorkspaceStore();
+  const { activeWorkspace, setActiveWorkspace } = useWorkspaceStore();
   const { isOpen } = useSidebarStore();
+
+  const {workspaces} = useWorkspaces();  
 
   return (
     <DropdownMenu>
@@ -65,7 +67,9 @@ export function WorkspaceDropdown() {
                 key={workspace.id}
                 workspace={workspace}
                 isActive={workspace.id === activeWorkspace.id}
-                onClick={() => setActiveWorkspace(workspace)}
+                onClick={() => {
+                  // setActiveWorkspace(workspace);
+                }}
               />
             ))}
           </div>

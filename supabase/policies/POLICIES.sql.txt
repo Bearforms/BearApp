@@ -1,0 +1,89 @@
+-- Create custom types first
+do $$ begin
+    create type user_role as enum ('owner', 'admin', 'member');
+exception
+    when duplicate_object then null;
+end $$;
+
+-- Helper function to check if user is workspace member
+create or replace function public.is_workspace_member(workspace_id uuid, user_id uuid)
+returns boolean as $$
+  select exists (
+    select 1
+    from public.workspace_members
+    where workspace_members.workspace_id = $1
+    and workspace_members.user_id = $2
+  );
+$$ language sql security definer;
+
+-- Helper function to get user's role in workspace
+create or replace function public.get_workspace_role(workspace_id uuid, user_id uuid)
+returns user_role as $$
+  select role
+  from public.workspace_members
+  where workspace_members.workspace_id = $1
+  and workspace_members.user_id = $2;
+$$ language sql security definer;
+
+-- Workspace policies
+create policy "Workspaces are viewable by members"
+  on workspaces for select
+  using (
+    is_workspace_member(id, auth.uid())
+  );
+
+create policy "Logged in profile can create workspaces"
+  on workspaces for insert
+  with check (
+    auth.role() = 'authenticated'
+  );
+
+create policy "Only owners can update workspace"
+  on workspaces for update
+  using (
+    auth.uid() = owner_id
+  );
+
+create policy "Only owners can delete workspace"
+  on workspaces for delete
+  using (
+    auth.uid() = owner_id
+  );
+
+-- Workspace members policies
+create policy "Members can view workspace members"
+  on workspace_members for select
+  using (
+    is_workspace_member(workspace_id, auth.uid())
+  );
+
+create policy "Owners and admins can add members"
+  on workspace_members for insert
+  with check (
+    get_workspace_role(workspace_id, auth.uid()) in ('owner', 'admin')
+  );
+
+create policy "Owners and admins can update member roles"
+  on workspace_members for update
+  using (
+    get_workspace_role(workspace_id, auth.uid()) in ('owner', 'admin')
+  );
+
+create policy "Owners and admins can remove members"
+  on workspace_members for delete
+  using (
+    get_workspace_role(workspace_id, auth.uid()) in ('owner', 'admin')
+  );
+
+-- Profiles policies
+create policy "Public profiles are viewable by everyone."
+  on profiles for select
+  using ( true );
+
+create policy "Users can insert their own profile."
+  on profiles for insert
+  with check ( auth.uid() = id );
+
+create policy "Users can update own profile."
+  on profiles for update
+  using ( auth.uid() = id );
