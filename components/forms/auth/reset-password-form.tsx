@@ -8,31 +8,34 @@ import { z } from "zod";
 import { Button } from '@/components/ui/button';
 import { Loader } from 'lucide-react';
 import { createClient } from '@/supabase/client';
+import { useRouter } from 'next/navigation';
 import { toast } from '@/hooks/use-toast';
-import { BASE_URL } from '@/constants';
 
 const formSchema = z.object({
-	email: z.string().min(1, "Email is required").email("Please enter a valid email"),
+	password: z.string().min(1, "Password is required"),
+	confirmpassword: z.string().min(1, "Confirm Password is required"),
+}).refine(data => data.password === data.confirmpassword, {
+	message: "Passwords do not match",
+	path: ["confirmpassword"]
 });
 
-const ForgotPasswordForm = () => {
+const ResetPasswordForm = () => {
 
+	const router = useRouter();
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			email: "",
+			confirmpassword: "",
+			password: ""
 		},
 	});
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		const supabase = await createClient();
-
-		const { error } = await supabase.auth.resetPasswordForEmail(values.email, {
-			redirectTo: `${BASE_URL}/auth/reset-password`
-		});
+		const { error } = await supabase.auth.updateUser({password: values.password});
 		if (error) {
 			toast({
-				title: 'Failed to reset password',
+				title: 'Failed to update password',
 				description: error.message,
 				variant: 'destructive'
 			});
@@ -40,9 +43,10 @@ const ForgotPasswordForm = () => {
 		}
 
 		toast({
-			title: 'Password reset',
-			description: 'An email has been sent to your email address with instructions to reset your password',
+			title: 'Success',
+			description: 'Password has been updated successfully',
 		});
+		router.replace('/');
 	}
 
 	return (
@@ -50,12 +54,26 @@ const ForgotPasswordForm = () => {
 			<form className="my-4 space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
 				<FormField
 					control={form.control}
-					name="email"
+					name="password"
 					render={({ field }) => (
 						<FormItem>
-							<FormLabel>Email address</FormLabel>
+							<FormLabel>Password</FormLabel>
 							<FormControl>
-								<Input placeholder="Enter email" {...field} />
+								<Input type='password' placeholder="**********" {...field} />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				
+				<FormField
+					control={form.control}
+					name="confirmpassword"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Confirm password</FormLabel>
+							<FormControl>
+								<Input type='password' placeholder="**********" {...field} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -63,11 +81,11 @@ const ForgotPasswordForm = () => {
 				/>
 
 				<Button className='w-full' disabled={form.formState.isSubmitting}>
-					Sign up {form.formState.isSubmitting && <Loader className='w-5 h-5 ml-2 animate-spin' />}
+					Submit {form.formState.isSubmitting && <Loader className='w-5 h-5 ml-2 animate-spin' />}
 				</Button>
 			</form>
 		</Form>
 	);
 };
 
-export default ForgotPasswordForm;
+export default ResetPasswordForm;
