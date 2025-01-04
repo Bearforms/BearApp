@@ -28,8 +28,9 @@ export async function GET(request: Request) {
 
 	return NextResponse.redirect(`${origin}/auth/login`);
 }
+ 
 
-export const createUserInitData = async (user: User) => {
+const createUserInitData = async (user: User) => {
 
 	try {
 		const supabase = await createAdminClient();
