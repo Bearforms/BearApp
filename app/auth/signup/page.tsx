@@ -8,12 +8,12 @@ const page = () => {
 	return (
 		<div className='bg-white min-h-screen flex items-center justify-center p-4'>
 
-			<div className="border-[#E5E5E5] max-w-[400px] w-full p-[24px] border-[1px] rounded-[4px]">
+			<div className="border-neutral-500 max-w-[400px] w-full p-[24px] border-[1px] rounded-[4px]">
 				<div className="flex justify-center">
 					<Logo className='' />
 				</div>
 
-				<h1 className="text-center text-[#171717] leading-[24px] text-[16px] font-[500] my-4">Create an account</h1>
+				<h1 className="text-center text-neutral-800 leading-[24px] text-[16px] font-[500] my-4">Create an account</h1>
 				<p className="text-center text-[#404040] leading-[20px] text-[14px] font-[400]">
 					Please sign up to get started
 				</p>

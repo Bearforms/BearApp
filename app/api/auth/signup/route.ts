@@ -18,7 +18,10 @@ export async function POST(request: Request) {
 		const { data: userData, error: userError } = await supabase.auth.admin.createUser({
 			email: validatedData.email,
 			password: validatedData.password,
-			email_confirm: true
+			email_confirm: true,
+			// user_metadata: {
+			// 	full_name: `${validatedData.firstName} ${validatedData.lastName}`
+			// }
 		});
 
 		if (userError) {
@@ -34,7 +37,8 @@ export async function POST(request: Request) {
 			.insert({
 				id: userId,
 				email: validatedData.email,
-				full_name: null,
+				first_name: validatedData.firstName,
+				last_name: validatedData.lastName,
 				avatar_url: null
 			});
 
