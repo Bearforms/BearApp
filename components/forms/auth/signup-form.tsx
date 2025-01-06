@@ -47,21 +47,14 @@ const SignUpForm = () => {
 
 			const { error } = await supabase.auth.signInWithPassword(values);
 
-			console.log({error});
+			console.log({ error });
 
 			if (error) {
 				router.push('/auth/signin');
 				return;
 			}
 
-			if (response?.data?.user?.workspace?.slug) {
-				console.log('redirecting to workspace');
-				// router.push(`/${response?.data?.user?.workspace?.slug}`);
-				router.push('/');
-			} else {
-				console.log('redirecting to home');
-				router.push('/');
-			};
+			router.push('/');
 
 		}
 	}

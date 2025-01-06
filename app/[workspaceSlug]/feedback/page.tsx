@@ -1,14 +1,11 @@
 'use client';
 
-import { Sidebar } from '@/components/layout/sidebar';
 import { FeedbackHeader } from '@/components/feedback/feedback-header';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 
 export default function FeedbackPage() {
   return (
-    <div className="flex h-screen bg-neutral-50">
-      <Sidebar />
       <main className="flex-1 flex flex-col min-w-0">
         <FeedbackHeader />
         <div className="flex-1 overflow-y-auto p-8">
@@ -23,6 +20,5 @@ export default function FeedbackPage() {
           </div>
         </div>
       </main>
-    </div>
   );
 }

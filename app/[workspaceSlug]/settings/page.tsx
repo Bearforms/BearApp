@@ -1,6 +1,5 @@
 'use client';
 
-import { Sidebar } from '@/components/layout/sidebar';
 import { SettingsHeader } from '@/components/settings/settings-header';
 import { AccountSettings } from '@/components/settings/account/account-settings';
 import { WorkspaceSettings } from '@/components/settings/workspace/workspace-settings';
@@ -11,8 +10,6 @@ import { User, Building2, Globe, CreditCard } from 'lucide-react';
 
 export default function SettingsPage() {
   return (
-    <div className="flex h-screen bg-neutral-50">
-      <Sidebar />
       <main className="flex-1 flex flex-col min-w-0">
         <SettingsHeader />
         <div className="flex-1 overflow-y-auto p-8">
@@ -77,6 +74,5 @@ export default function SettingsPage() {
           </div>
         </div>
       </main>
-    </div>
   );
 }

@@ -13,7 +13,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { useParams, usePathname, useRouter } from 'next/navigation';
 import { useSidebarStore } from '@/stores/sidebar-store';
 import { WorkspaceDropdown } from '../workspaces/workspace-dropdown';
 import {
@@ -50,14 +50,13 @@ export function Sidebar() {
   const router = useRouter();
   const { isOpen, toggleSidebar } = useSidebarStore();
   const { user } = useSession();
+  const params = useParams();
 
   const handleLogout = async () => {
     const supabase = createClient();
     await supabase.auth.signOut();
     router.push('/auth/login');
   };
-
-  if (!user) return null;
 
   return (
     <div
@@ -72,7 +71,7 @@ export function Sidebar() {
           isOpen ? 'px-2' : 'px-0'
         )}
       >
-        <Link href="/" className="rounded-md">
+        <Link href={`/${params.workspaceSlug}`} className="rounded-md">
           <div
             className={cn(
               'px-2 h-10 flex items-center',
@@ -118,11 +117,11 @@ export function Sidebar() {
           {mainNavigation.map((item) => (
             <Link
               key={item.name}
-              href={item.href}
+              href={`/${params.workspaceSlug}${item.href}`}
               className={cn(
                 'flex justify-center items-center rounded-md w-full text-sm font-normal h-10 transition-all duration-300 ease-in-out',
                 isOpen ? 'justify-start px-3' : 'w-10 p-0',
-                pathname === item.href
+                (pathname === `/${params.workspaceSlug}${item.href}` || (pathname === `/${params.workspaceSlug}` && item.href === '/'))  
                   ? 'bg-neutral-100'
                   : 'hover:bg-neutral-50'
               )}
@@ -152,7 +151,7 @@ export function Sidebar() {
       <div className="px-2 mb-2">
         <div className="flex flex-col space-y-1">
           <Link
-            href="/settings"
+            href={`/${params.workspaceSlug}/settings`}
             className={cn(
               'flex justify-center items-center rounded-md w-full text-sm font-normal h-10 transition-all duration-300 ease-in-out',
               isOpen ? 'justify-start px-3' : 'w-10 p-0',
@@ -178,7 +177,8 @@ export function Sidebar() {
             </span>
           </Link>
           <Link
-            href="/feedback"
+            // href="/feedback"
+            href={`/${params.workspaceSlug}/feedback`}
             className={cn(
               'flex justify-center items-center rounded-md w-full text-sm font-normal h-10 transition-all duration-300 ease-in-out',
               isOpen ? 'justify-start px-3' : 'w-10 p-0',

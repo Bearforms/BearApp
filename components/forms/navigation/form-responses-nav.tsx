@@ -16,7 +16,7 @@ export function FormResponsesNav() {
     <div className="hidden w-1/3 sm:flex justify-center items-center">
       <nav className="flex p-0 space-x-1.5">
         <Link
-          href={`/edit/${formId}`}
+          href={`/${params.workspaceSlug}/edit/${formId}`}
           className={cn(
             'flex-1 px-3 h-8 flex items-center justify-center gap-2 rounded-md text-sm font-medium hover:bg-neutral-50 transition-colors',
             isFormView
@@ -27,7 +27,7 @@ export function FormResponsesNav() {
           Form
         </Link>
         <Link
-          href={`/responses/${formId}`}
+          href={`/${params.workspaceSlug}/responses/${formId}`}
           className={cn(
             'flex-1 px-3 h-8 flex items-center justify-center gap-2 rounded-md text-sm font-medium hover:bg-neutral-50 transition-colors',
             isResponsesView
