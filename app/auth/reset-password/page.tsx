@@ -8,7 +8,7 @@ const page = () => {
 	return (
 		<div className='bg-white min-h-screen flex items-center justify-center p-4'>
 
-			<div className="border-neutral-500 max-w-[400px] w-full p-[24px] border-[1px] rounded-[4px]">
+			<div className="border-neutral-200 max-w-[400px] w-full p-[24px] border-[1px] rounded-[4px]">
 				<div className="flex justify-center">
 					<Logo className='' />
 				</div>

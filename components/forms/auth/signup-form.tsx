@@ -102,7 +102,7 @@ const SignUpForm = () => {
 						<FormItem>
 							<FormLabel>Email address</FormLabel>
 							<FormControl>
-								<Input type='email' placeholder="Enter email" {...field} />
+								<Input type='email' placeholder="john.doe@email.com" {...field} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -115,7 +115,7 @@ const SignUpForm = () => {
 						<FormItem>
 							<FormLabel>Password</FormLabel>
 							<FormControl>
-								<Input type='password' placeholder="**********" {...field} />
+								<Input type='password' placeholder="••••••••••" {...field} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>

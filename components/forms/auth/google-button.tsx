@@ -37,7 +37,7 @@ const GoogleButton = ({ action = "Login" }: { action?: string; }) => {
 	};
 
 	return (
-		<button disabled={isLoading} onClick={handleContinueWithGoogle} className="disabled:bg-opacity-80 disabled:cursor-not-allowed border-neutral-500 w-full py-[8px] px-[12px] flex justify-center my-4 items-center gap-4 border-[1px] rounded-[4px]">
+		<button disabled={isLoading} onClick={handleContinueWithGoogle} className="disabled:bg-opacity-80 disabled:cursor-not-allowed border-neutral-200 w-full py-2 px-3 flex justify-center my-4 items-center gap-4 border-[1px] rounded-[4px] text-sm leading-5">
 			{
 				isLoading ? <Loader className='w-6 h-6 animate-spin' /> :
 					<Image src="/google.png" width={24} height={24} alt="Google Icon" />
