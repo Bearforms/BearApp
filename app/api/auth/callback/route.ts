@@ -57,7 +57,7 @@ const createUserInitData = async (user: User) => {
 		}
 
 		// Create workspace
-		const workspaceName = user.email?.split('@')[0] + "'s Workspace";
+		const workspaceName = "Personal Workspace";
 		const workspaceSlugBase = user.email?.split('@')[0].toLowerCase().replace(/[^a-z0-9]+/g, '-');
 		let workspaceSlug = workspaceSlugBase + '-workspace';
 

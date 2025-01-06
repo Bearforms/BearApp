@@ -50,7 +50,7 @@ export async function POST(request: Request) {
 		}
 
 		// Create workspace
-		const workspaceName = validatedData.email.split('@')[0] + "'s Workspace";
+		const workspaceName = "Personal Workspace";
 		const workspaceSlugBase = validatedData.email.split('@')[0].toLowerCase().replace(/[^a-z0-9]+/g, '-');
 		let workspaceSlug = workspaceSlugBase + '-workspace';
 
