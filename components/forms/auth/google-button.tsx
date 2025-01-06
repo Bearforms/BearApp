@@ -13,9 +13,12 @@ const GoogleButton = ({ action = "Login" }: { action?: string; }) => {
 	const [isLoading, setIsLoading] = useState(false);
 
 	const router = useRouter();
+	console.log('BASE_URL', BASE_URL);
 
 	const handleContinueWithGoogle = async () => {
 		const supabase = createClient();
+
+
 
 		setIsLoading(true);
 		const { data, error } = await supabase.auth.signInWithOAuth({
