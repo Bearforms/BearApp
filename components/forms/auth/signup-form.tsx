@@ -19,6 +19,8 @@ const SignUpForm = () => {
 	const form = useForm<z.infer<typeof createUserSchema>>({
 		resolver: zodResolver(createUserSchema),
 		defaultValues: {
+			firstName: "",
+			lastName: "",
 			email: "",
 			password: ""
 		},
@@ -30,8 +32,6 @@ const SignUpForm = () => {
 			method: 'POST',
 			body: JSON.stringify(values),
 		});
-
-		console.log(response?.data);
 
 		if (!response.success) {
 			toast({
@@ -71,12 +71,38 @@ const SignUpForm = () => {
 			<form className="my-4 space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
 				<FormField
 					control={form.control}
+					name="firstName"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>First name</FormLabel>
+							<FormControl>
+								<Input placeholder="John" {...field} />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<FormField
+					control={form.control}
+					name="lastName"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Last name</FormLabel>
+							<FormControl>
+								<Input placeholder="Doe" {...field} />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<FormField
+					control={form.control}
 					name="email"
 					render={({ field }) => (
 						<FormItem>
 							<FormLabel>Email address</FormLabel>
 							<FormControl>
-								<Input placeholder="Enter email" {...field} />
+								<Input type='email' placeholder="john.doe@email.com" {...field} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -89,7 +115,7 @@ const SignUpForm = () => {
 						<FormItem>
 							<FormLabel>Password</FormLabel>
 							<FormControl>
-								<Input type='password' placeholder="**********" {...field} />
+								<Input type='password' placeholder="••••••••••" {...field} />
 							</FormControl>
 							<FormMessage />
 						</FormItem>

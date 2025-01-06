@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from '@/lib/utils';
+import { cn, getNameInitials } from '@/lib/utils';
 import {
   FileText,
   GalleryVerticalEnd,
@@ -13,7 +13,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useSidebarStore } from '@/stores/sidebar-store';
 import { WorkspaceDropdown } from '../workspaces/workspace-dropdown';
 import {
@@ -24,6 +24,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { createClient } from '@/supabase/client';
+import { useSession } from '@/hooks/use-session';
 
 const mainNavigation = [
   {
@@ -45,7 +47,17 @@ const mainNavigation = [
 
 export function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
   const { isOpen, toggleSidebar } = useSidebarStore();
+  const { user } = useSession();
+
+  const handleLogout = async () => {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push('/auth/login');
+  };
+
+  if (!user) return null;
 
   return (
     <div
@@ -212,12 +224,20 @@ export function Sidebar() {
                   isOpen && 'mr-2'
                 )}
               >
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>JD</AvatarFallback>
+                <AvatarImage src={user?.profile?.avatar_url} />
+                <AvatarFallback>
+                  {getNameInitials(`${user?.profile?.first_name} ${user?.profile?.last_name}`)}
+                </AvatarFallback>
               </Avatar>
               {isOpen && (
                 <>
-                  <span className="text-sm font-normal">John Doe</span>
+                  <span className="text-sm font-normal">
+                    {
+                      (!user?.profile?.first_name && !user?.profile?.last_name) ? user?.email : <>
+                        {user?.profile?.first_name} {user?.profile?.last_name}
+                      </>
+                    }
+                  </span>
                   <ChevronDown
                     className="ml-auto h-4 w-4 text-neutral-500"
                     strokeWidth={2}
@@ -229,7 +249,7 @@ export function Sidebar() {
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout}>
               <LogOut
                 className="mr-2 h-4 w-4 text-neutral-500"
                 strokeWidth={2}

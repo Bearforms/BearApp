@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import React from 'react';
-import ForgotPasswordForm from '@/components/forms/auth/forgot-password-form';
+
 import Logo from '@/components/common/logo';
+import ResetPasswordForm from '@/components/forms/auth/reset-password-form';
 
 const page = () => {
 	return (
@@ -14,10 +15,10 @@ const page = () => {
 
 				<h1 className="text-center text-neutral-900 leading-[24px] text-[16px] font-[500] my-4">Password reset</h1>
 				<p className="text-center text-neutral-700 leading-5 text-[14px] font-[400]">
-					Enter your email address and we&apos;ll send you a link to reset your password.
+					Enter and confirm your password.
 				</p>
 
-				<ForgotPasswordForm />
+				<ResetPasswordForm />
 
 				<p className="text-left text-neutral-700 leading-5 text-[14px] font-[400] mt-1">
 					Back to  <Link href="/auth/login" className='underline'>Login</Link>
