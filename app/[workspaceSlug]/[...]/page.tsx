@@ -11,8 +11,6 @@ const page = ({} : Props ) => {
 			<p>
 				Please go back to the previous page
 			</p>
-
-			
 		</main>
 	);
 };

@@ -6,14 +6,21 @@ import { Input } from '@/components/ui/input';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from '@/components/ui/button';
-import { Loader } from 'lucide-react';
+import { Loader, AlertCircle } from 'lucide-react';
 import { createUserSchema } from '@/lib/validations/auth';
 import { fetchApi } from '@/lib/api';
 import { toast } from '@/hooks/use-toast';
 import { createClient } from '@/supabase/client';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import {
+	Alert,
+	AlertDescription,
+	AlertTitle,
+} from "@/components/ui/alert";
 
 const SignUpForm = () => {
+	const [error, setError] = useState<{ title: string, description: string; } | null>(null);
 
 	const router = useRouter();
 	const form = useForm<z.infer<typeof createUserSchema>>({
@@ -27,6 +34,7 @@ const SignUpForm = () => {
 	});
 
 	async function onSubmit(values: z.infer<typeof createUserSchema>) {
+		setError(null);
 		const supabase = await createClient();
 		const response = await fetchApi('/api/auth/signup', {
 			method: 'POST',
@@ -34,10 +42,9 @@ const SignUpForm = () => {
 		});
 
 		if (!response.success) {
-			toast({
+			setError({
 				title: 'Failed to sign up',
-				description: response.error,
-				variant: 'destructive'
+				description: response.error
 			});
 		} else {
 			toast({
@@ -47,7 +54,6 @@ const SignUpForm = () => {
 
 			const { error } = await supabase.auth.signInWithPassword(values);
 
-			console.log({ error });
 
 			if (error) {
 				router.push('/auth/signin');
@@ -59,9 +65,27 @@ const SignUpForm = () => {
 		}
 	}
 
+	useEffect(() => {
+		return () => {
+			setError(null);
+		};
+	}, []);
+
 	return (
 		<Form {...form} >
 			<form className="my-4 space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
+				{
+					!!error && (
+						<Alert variant="destructive" className='mb-4'>
+							<AlertCircle className="h-4 w-4" />
+							<AlertTitle>{error.title}</AlertTitle>
+							<AlertDescription>
+								{error.description}
+							</AlertDescription>
+						</Alert>
+					)
+				}
+
 				<FormField
 					control={form.control}
 					name="firstName"
