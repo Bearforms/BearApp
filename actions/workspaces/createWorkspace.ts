@@ -29,6 +29,7 @@ export const createWorkspace = async (name: string) => {
 		slug: workspaceSlug,
 		is_public: false,
 		description: null,
+		updated_by: user.id
 	}).select().single();
 
 	if (workspaceError) {

@@ -17,12 +17,14 @@ export function WorkspaceInfo({ workspace }: WorkspaceInfoProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [isPublic, setIsPublic] = useState(workspace.is_public || false);
 
-  const { mutate } = useMutation({
+  const { mutate, isPending: isPendingUpdateStatus } = useMutation({
     mutationFn: updateWorkspacePublicStatus,
     onError: () => {
       setIsPublic(workspace.is_public);
     }
   });
+
+  const canUpdateWorkspace = false;
 
   return (
     <div className="space-y-3">
@@ -36,9 +38,13 @@ export function WorkspaceInfo({ workspace }: WorkspaceInfoProps) {
             by {workspace.updated_by?.first_name} {workspace.updated_by?.last_name}
           </p>
         </div>
-        <Button variant="outline" onClick={() => setIsEditing(true)}>
-          Edit
-        </Button>
+        {
+          canUpdateWorkspace && (
+            <Button variant="outline" onClick={() => setIsEditing(true)}>
+              Edit
+            </Button>
+          )
+        }
       </div>
 
       <div className="space-y-4">
@@ -76,6 +82,7 @@ export function WorkspaceInfo({ workspace }: WorkspaceInfoProps) {
               setIsPublic(state);
               mutate({ workspaceId: workspace.id, isPublic: state });
             }}
+            disabled={!canUpdateWorkspace || isPendingUpdateStatus}
           />
         </div>
       </div>

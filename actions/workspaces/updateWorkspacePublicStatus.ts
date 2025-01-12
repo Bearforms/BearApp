@@ -12,7 +12,11 @@ export const updateWorkspacePublicStatus = async ({ workspaceId, isPublic }: { w
 	}
 
 	const supabase = await createClient();
-	const { error } = await supabase.from('workspaces').update({ is_public: isPublic }).eq('id', workspaceId);
+	const { error } = await supabase.from('workspaces').update({
+		is_public: isPublic,
+		updated_at: new Date(),
+		updated_by: user.id
+	}).eq('id', workspaceId);
 
 	if (error) {
 		console.log("Error in updateWorkspacePublicStatus", error);
