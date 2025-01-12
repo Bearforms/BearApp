@@ -30,7 +30,7 @@ export function NewWorkspaceModal({ open, onOpenChange }: NewWorkspaceModalProps
   const router = useRouter();
   const { refetchWorkspaces } = useWorkspaces();
 
-  const { isPending, mutate, error } = useMutation({
+  const { isPending, mutate } = useMutation({
     mutationFn: createWorkspace,
     onSuccess: (data) => {
       onOpenChange(false);

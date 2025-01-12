@@ -9,11 +9,7 @@ import { getUserWorkspaceBySlug } from '@/actions/workspaces/getUserWorkspaceByS
 
 export default async function SettingsPage({params}: {params: {workspaceSlug: string}}) {
 
-  const workspace = await getUserWorkspaceBySlug(params.workspaceSlug);
-
-
-  console.log(workspace);
-  
+  const workspace = await getUserWorkspaceBySlug(params.workspaceSlug);  
 
   return (
       <main className="flex-1 flex flex-col min-w-0">

@@ -6,12 +6,11 @@ import { createClient } from '@/supabase/server';
 
 const IGNORED_WORKSPACE_SLUGS = ['public', 'auth', 'api', 'admin', 'settings', 'templates', 'deleted', 'favicon.ico', 'robots.txt'];
 
-
 export const getUserWorkspaceBySlug = async (idOrSlug: string) => {
 	if (IGNORED_WORKSPACE_SLUGS.includes(idOrSlug)) {
 		return null;
 	}
-	
+
 	const user = await getCurrentUser();
 	if (!user) {
 		throw new Error('User not authenticated');
@@ -22,9 +21,10 @@ export const getUserWorkspaceBySlug = async (idOrSlug: string) => {
 	const { data, error } = await supabase.from('workspaces')
 		.select(`
 				*, 
-				profiles!updated_by (
+				updated_by:profiles!updated_by (
 					id,
-					first_name
+					first_name,
+					last_name
 				)
 		`).eq('owner_id', user.id).eq(`slug`, idOrSlug).single();
 

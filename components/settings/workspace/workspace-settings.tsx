@@ -1,4 +1,4 @@
-import { Workspace } from '@/types/workspace';
+import { Workspace } from '@/types/supabase';
 import { WorkspaceInfo } from './workspace-info';
 import { WorkspaceMembers } from './workspace-members';
 import { Separator } from '@/components/ui/separator';
