@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/dialog';
 import { useMutation } from '@tanstack/react-query';
 import { createWorkspace } from '@/actions/workspaces/createWorkspace';
+import { useWorkspaces } from '@/hooks/use-workspaces';
 
 interface NewWorkspaceModalProps {
   open: boolean;
@@ -27,48 +28,55 @@ interface NewWorkspaceModalProps {
 export function NewWorkspaceModal({ open, onOpenChange }: NewWorkspaceModalProps) {
   const [name, setName] = useState('');
   const router = useRouter();
-  const params = useParams();
+  const { refetchWorkspaces } = useWorkspaces();
 
-  const { isPending, mutateAsync } = useMutation({
+  const { isPending, mutate, error } = useMutation({
     mutationFn: createWorkspace,
     onSuccess: (data) => {
-      console.log(data);
-    },
+      onOpenChange(false);
+      refetchWorkspaces();
+
+      if (data.slug)  router.push(`/${data.slug}`);
+    }
   });
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
+    if (!name.trim() || isPending) return;
+
+    mutate(name);
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="min-w-[480px]">
         <DialogHeader>
-          <DialogTitle>Create new workspace</DialogTitle>
-          <DialogDescription>
-            Give your form a name to get started. You can change this later.
+          <DialogTitle>New workspace</DialogTitle>
+          <DialogDescription className='hidden'>
+            Give your workspace a name to get started. You can change this later.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
-          <div className="py-4">
-            <Input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Form name"
-              className="w-full"
-              autoFocus
-              disabled={isCreating}
-            />
-          </div>
-          <DialogFooter>
+          <Input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Workspace name"
+            className="w-full mt-3"
+            autoFocus
+            disabled={isPending}
+          />
+          <DialogFooter className='mt-6'>
             <Button
               type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
-              disabled={isCreating}
+              disabled={isPending}
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={!name.trim() || isCreating}>
-              {isCreating ? (
+            <Button type="submit" disabled={isPending}>
+              {isPending ? (
                 <>
                   <Loader2
                     className="mr-2 h-4 w-4 animate-spin"

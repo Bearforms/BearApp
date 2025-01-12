@@ -26,6 +26,8 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { createClient } from '@/supabase/client';
 import { useSession } from '@/hooks/use-session';
+import { useState } from 'react';
+import { NewWorkspaceModal } from '../forms/new-workspace-modal';
 
 const mainNavigation = [
   {
@@ -46,9 +48,11 @@ const mainNavigation = [
 ];
 
 export function Sidebar() {
+  const [showNewWorkspaceModal, setShowNewWorkspaceModal] = useState(false);
+
   const pathname = usePathname();
   const router = useRouter();
-  const { isOpen, toggleSidebar } = useSidebarStore();
+  const { isOpen } = useSidebarStore();
   const { user } = useSession();
   const params = useParams();
 
@@ -109,7 +113,7 @@ export function Sidebar() {
       </div>
 
       <div className="px-2 mt-3">
-        <WorkspaceDropdown />
+        <WorkspaceDropdown handleOpenCreateWorkspace={()=>setShowNewWorkspaceModal(true)} />
       </div>
 
       <nav className="flex-1 px-2 mt-5">
@@ -259,6 +263,8 @@ export function Sidebar() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+
+      <NewWorkspaceModal open={showNewWorkspaceModal} onOpenChange={setShowNewWorkspaceModal} />
     </div>
   );
 }
