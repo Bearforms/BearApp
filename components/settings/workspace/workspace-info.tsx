@@ -9,10 +9,17 @@ import { Switch } from '@/components/ui/switch';
 import { useWorkspaceStore } from '@/stores/workspace-store';
 import { toast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
+import { Workspace } from '@/types/workspace';
 
-export function WorkspaceInfo() {
+interface WorkspaceInfoProps {
+  workspace: Workspace;
+}
+
+export function WorkspaceInfo({ workspace }: WorkspaceInfoProps) {
   const { activeWorkspace, updateWorkspace } = useWorkspaceStore();
   const [isEditing, setIsEditing] = useState(false);
+
+
   const [name, setName] = useState(activeWorkspace.name);
   const [description, setDescription] = useState(
     activeWorkspace.description || ''
@@ -37,7 +44,7 @@ export function WorkspaceInfo() {
           {' '}
           <h3 className="text-base font-medium">General Information</h3>
           <p className="text-sm text-muted-foreground">
-            Basic details about your workspace
+            Created {format(new Date(workspace.createdAt || Date.now()), 'PPP')} {"•"} Last updated {format(new Date(workspace.updatedAt || Date.now()), 'PPP')}
           </p>
         </div>
         <Button variant="outline" onClick={() => setIsEditing(true)}>
@@ -55,16 +62,16 @@ export function WorkspaceInfo() {
               className="max-w-md"
             />
           ) : (
-            <div className="flex items-center justify-between">
-              <p className="text-sm">{name}</p>
-            </div>
+              <p className="text-sm text-muted-foreground">
+                {workspace.name}
+              </p>
           )}
         </div>
 
         <div className="space-y-2">
           <Label>Workspace ID</Label>
           <p className="text-sm text-muted-foreground font-mono">
-            {activeWorkspace.id}
+            {workspace.id}
           </p>
         </div>
 
