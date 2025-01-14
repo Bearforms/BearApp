@@ -8,13 +8,14 @@ import { format } from 'date-fns';
 import { Workspace } from '@/types/supabase';
 import { useMutation } from '@tanstack/react-query';
 import { updateWorkspacePublicStatus } from '@/actions/workspaces/updateWorkspacePublicStatus';
+import { EditWorkspaceModal } from '@/components/forms/edit-workspace-modal';
 
 interface WorkspaceInfoProps {
   workspace: Workspace;
 }
 
 export function WorkspaceInfo({ workspace }: WorkspaceInfoProps) {
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditting, setIsEditting] = useState(false);
   const [isPublic, setIsPublic] = useState(workspace.is_public || false);
 
   const { mutate, isPending: isPendingUpdateStatus } = useMutation({
@@ -24,7 +25,7 @@ export function WorkspaceInfo({ workspace }: WorkspaceInfoProps) {
     }
   });
 
-  const canUpdateWorkspace = false;
+  const canUpdateWorkspace = true;
 
   return (
     <div className="space-y-3">
@@ -40,7 +41,7 @@ export function WorkspaceInfo({ workspace }: WorkspaceInfoProps) {
         </div>
         {
           canUpdateWorkspace && (
-            <Button variant="outline" onClick={() => setIsEditing(true)}>
+            <Button variant="outline" onClick={() => setIsEditting(true)}>
               Edit
             </Button>
           )
@@ -86,6 +87,10 @@ export function WorkspaceInfo({ workspace }: WorkspaceInfoProps) {
           />
         </div>
       </div>
+
+      {
+        isEditting && <EditWorkspaceModal open={isEditting} onOpenChange={setIsEditting} workspace={workspace} />
+      }
     </div>
   );
 }

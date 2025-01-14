@@ -11,7 +11,7 @@ export const getUserWorkspaces = async () => {
 	}
 	const supabase = await createClient();
 
-	const { data, error } = await supabase.from('workspaces').select('id, slug').eq('owner_id', user.id);
+	const { data, error } = await supabase.from('workspaces').select('id, slug').eq('owner_id', user.id).neq('slug', '');
 	
 	if (error) {
 		console.log("Error in getUserWorkspaceBySlug", error);

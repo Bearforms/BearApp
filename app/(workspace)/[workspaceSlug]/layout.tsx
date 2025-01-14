@@ -12,7 +12,7 @@ export default async function Layout({ params, children }: { params: { workspace
 
   const userWorkspace = await getUserWorkspaceBySlug(params.workspaceSlug);
 
-  if (!userWorkspace) redirect('/');
+  // if (!userWorkspace) redirect('/');
 
   return (
     <div className="flex h-screen bg-neutral-50">
