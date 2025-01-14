@@ -29,7 +29,7 @@ export const createWorkspace = async (name: string) => {
 		slug: workspaceSlug,
 		is_public: false,
 		description: null,
-		updated_by: user.id
+		updated_by: user.id,
 	}).select().single();
 
 	if (workspaceError) {
@@ -42,6 +42,7 @@ export const createWorkspace = async (name: string) => {
 		workspace_id: workspaceData?.id,
 		user_id: user.id,
 		role: 'owner',
+		added_by: user.id,
 	});
 
 	if (memberError) {

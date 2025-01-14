@@ -11,11 +11,21 @@ export const getUserWorkspaces = async () => {
 	}
 	const supabase = await createClient();
 
-	const { data, error } = await supabase.from('workspaces').select('id, slug').eq('owner_id', user.id).neq('slug', '');
-	
+	const { data, error } = await supabase.from('workspaces')
+		.select(`
+			*,
+			members:workspace_members!workspace_members_workspace_id_fkey (
+				user_id,
+				role
+			)
+		`)
+		// .neq('slug', '');
+
 	if (error) {
-		console.log("Error in getUserWorkspaceBySlug", error);
+		console.log("Error in getUserWorkspaces", error);
 	}
 
+	console.log({ data, error });
+	
 	return data ?? [];
 };

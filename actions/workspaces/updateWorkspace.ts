@@ -17,7 +17,7 @@ export const updateWorkspace = async ({ workspaceId, name, description }:{worksp
 	const workspaceSlugBase = name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 	let workspaceSlug = workspaceSlugBase + (workspaceSlugBase?.endsWith('workspace') ? '' : '-workspace');
 
-	// check if slug exists
+	// check if workspace exists
 	const { data: existingWorkspace } = await supabase.from('workspaces').select('id').eq('id', workspaceId).single();
 	if (!existingWorkspace) {
 		throw new Error('Workspace not found');

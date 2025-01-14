@@ -25,6 +25,16 @@ export const getUserWorkspaceBySlug = async (idOrSlug: string) => {
 					id,
 					first_name,
 					last_name
+				),
+				members:workspace_members!workspace_members_workspace_id_fkey (
+					user_id,
+					role,
+					profile:profiles!workspace_members_user_id_fkey (
+						id,
+						first_name,
+						last_name,
+						avatar_url
+					)
 				)
 		`).eq('owner_id', user.id).eq(`slug`, idOrSlug).single();
 

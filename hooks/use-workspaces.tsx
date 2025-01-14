@@ -8,13 +8,21 @@ export const useWorkspaces = () => {
 	const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
 
 	const { user } = useSession();
-	
+
 	const fetchWorkspaces = async () => {
 		const supabase = await createClient();
-		const { data, error } = await supabase.from('workspaces').select('*').eq('owner_id', user?.id);
-		
+		const { data, error } = await supabase.from('workspaces')
+			.select(`
+				*,
+				members:workspace_members!workspace_members_workspace_id_fkey (
+					user_id,
+					role
+				)
+			`)
+			.neq('slug', '');
+			// .or(`owner_id.eq.${user!.id},workspace_members.user_id.eq.${user!.id}`);
+
 		if (error) {
-			console.error(error);
 			return;
 		}
 

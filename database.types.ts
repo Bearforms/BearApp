@@ -14,22 +14,25 @@ export type Database = {
           avatar_url: string | null
           created_at: string
           email: string
-          full_name: string | null
+          first_name: string | null
           id: string
+          last_name: string | null
         }
         Insert: {
           avatar_url?: string | null
           created_at?: string
           email: string
-          full_name?: string | null
+          first_name?: string | null
           id?: string
+          last_name?: string | null
         }
         Update: {
           avatar_url?: string | null
           created_at?: string
           email?: string
-          full_name?: string | null
+          first_name?: string | null
           id?: string
+          last_name?: string | null
         }
         Relationships: []
       }
@@ -79,6 +82,7 @@ export type Database = {
           owner_id: string
           slug: string
           updated_at: string | null
+          updated_by: string | null
         }
         Insert: {
           created_at?: string
@@ -89,6 +93,7 @@ export type Database = {
           owner_id?: string
           slug: string
           updated_at?: string | null
+          updated_by?: string | null
         }
         Update: {
           created_at?: string
@@ -99,11 +104,19 @@ export type Database = {
           owner_id?: string
           slug?: string
           updated_at?: string | null
+          updated_by?: string | null
         }
         Relationships: [
           {
             foreignKeyName: "workspaces_owner_id_fkey"
             columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workspaces_updated_by_fkey"
+            columns: ["updated_by"]
             isOneToOne: false
             referencedRelation: "profiles"
             referencedColumns: ["id"]

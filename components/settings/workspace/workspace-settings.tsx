@@ -24,7 +24,7 @@ export function WorkspaceSettings({ workspace }: WorkspaceSettingsProps) {
       <Separator />
 
       <div>
-        <WorkspaceMembers />
+        <WorkspaceMembers workspace={workspace} />
       </div>
     </div>
   );
