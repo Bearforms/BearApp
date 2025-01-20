@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -40,19 +40,23 @@ import { Workspace } from '@/types/supabase';
 import { useMutation } from '@tanstack/react-query';
 import { addWorkspaceMember } from '@/actions/workspaces/addWorkspaceMember';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { updateWorkspaceMemberRole } from '@/actions/workspaces/updateWorkspaceMemberRole';
+import { useSession } from '@/hooks/use-session';
+import { deleteWorkspaceMember } from '@/actions/workspaces/deleteWorkspaceMember';
 
 interface WorkspaceMembersProps {
   workspace: Workspace;
 }
 
 export function WorkspaceMembers({ workspace }: WorkspaceMembersProps) {
-  const [members] = useState(workspace.members || []);
+  const [members, setMembers] = useState(workspace.members || []);
   const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
   const [showInviteDialog, setShowInviteDialog] = useState(false);
   const [inviteEmail, setInviteEmail] = useState('');
   const [inviteRole, setInviteRole] = useState('member');
 
   const [addMemberError, setAddMemberError] = useState<string | null>(null);
+  const { user } = useSession();
 
   const { mutate, isPending: isPendingInvite } = useMutation({
     mutationFn: addWorkspaceMember,
@@ -65,6 +69,30 @@ export function WorkspaceMembers({ workspace }: WorkspaceMembersProps) {
     }
   });
 
+  const { mutate: mutateChangeRole, isPending: isPendingChangeRole } = useMutation({
+    mutationFn: updateWorkspaceMemberRole,
+    onError: (error) => {
+      toast({ description: error.message, variant: 'destructive', title: 'Failed' });
+    },
+    onSuccess: (data) => {
+      toast({ description: 'Member role updated successfully!' });
+      setMembers((prev) => prev.map((m) => m.user_id === data.user_id ? { ...m, role: data.role } : m));
+    }
+  });
+
+  const { mutate: mutateDelete, isPending: isPendingDelete } = useMutation({
+    mutationFn: deleteWorkspaceMember,
+    onError: (error) => {
+      toast({ description: error.message, variant: 'destructive', title: 'Failed' });
+    },
+    onSuccess: (data) => {
+      console.log(data);
+      
+      toast({ description: 'Member deleted successfully!' });
+      setMembers((prev) => prev.filter((m) => m.user_id !== data.user_id));
+    }
+  });
+
   const handleInvite = () => {
     setAddMemberError(null);
     mutate({ workspaceId: workspace.id, email: inviteEmail, role: inviteRole });
@@ -72,10 +100,6 @@ export function WorkspaceMembers({ workspace }: WorkspaceMembersProps) {
 
   const handleRemoveMember = (id: string) => {
     toast({ description: 'Member removed from workspace' });
-  };
-
-  const handleRoleChange = (id: string, role: string) => {
-    toast({ description: 'Member role updated' });
   };
 
   const handleSelectAll = (checked: boolean) => {
@@ -87,6 +111,15 @@ export function WorkspaceMembers({ workspace }: WorkspaceMembersProps) {
       checked ? [...prev, id] : prev.filter((m) => m !== id)
     );
   };
+
+  const canEditMembers = useMemo(() => {
+    if (workspace.owner_id === user?.id) return true;
+
+    const member = members.find((m) => m.user_id === user?.id);
+    if (!member) return false;
+
+    return member.role === 'owner' || member.role === 'admin';
+  }, [workspace.owner_id, user?.id, members]);
 
   return (
     <div className="space-y-6">
@@ -151,16 +184,31 @@ export function WorkspaceMembers({ workspace }: WorkspaceMembersProps) {
                 <TableCell>
                   <Select
                     value={member.role}
-                    disabled={member.user_id === workspace.owner_id || member.role === 'owner'}
+                    disabled={
+                      member.user_id === workspace.owner_id
+                      || member.user_id === user?.id
+                      || member.role === 'owner'
+                      || isPendingChangeRole
+                      || !canEditMembers
+                    }
+
                     onValueChange={(value) =>
-                      handleRoleChange(member.user_id, value)
+                      mutateChangeRole({
+                        workspaceId: workspace.id,
+                        memberId: member.user_id,
+                        role: value as string,
+                      })
                     }
                   >
                     <SelectTrigger className="w-[110px]">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="owner">Owner</SelectItem>
+                      {
+                        member.role === 'owner' && (
+                          <SelectItem value="owner">Owner</SelectItem>
+                        )
+                      }
                       <SelectItem value="admin">Admin</SelectItem>
                       <SelectItem value="member">Member</SelectItem>
                     </SelectContent>
@@ -170,7 +218,13 @@ export function WorkspaceMembers({ workspace }: WorkspaceMembersProps) {
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <Button
-                        disabled={member.user_id === workspace.owner_id || member.role === 'owner'}
+                        disabled={
+                          member.user_id === workspace.owner_id
+                          || member.user_id === user?.id
+                          || member.role === 'owner'
+                          || isPendingDelete
+                          || !canEditMembers
+                        }
                         variant="ghost"
                         size="icon"
                         className="h-8 w-8 disabled:cursor-not-allowed"
@@ -180,7 +234,12 @@ export function WorkspaceMembers({ workspace }: WorkspaceMembersProps) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                       <DropdownMenuItem
-                        onClick={() => handleRemoveMember(member.user_id)}
+                        onClick={() => {
+                          mutateDelete({
+                            workspaceId: workspace.id,
+                            memberId: member.user_id,
+                          });
+                        }}
                         className="text-red-600"
                       >
                         Remove member

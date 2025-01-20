@@ -31,12 +31,15 @@ export const getUserWorkspaceBySlug = async (idOrSlug: string) => {
 					role,
 					profile:profiles!workspace_members_user_id_fkey (
 						id,
+						email,
 						first_name,
 						last_name,
 						avatar_url
 					)
 				)
-		`).eq('owner_id', user.id).eq(`slug`, idOrSlug).single();
+		`)
+		// .eq('owner_id', user.id)
+		.eq(`slug`, idOrSlug).single();
 
 	if (error) {
 		console.log("Error in getUserWorkspaceBySlug_",idOrSlug, error);
