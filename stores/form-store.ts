@@ -8,6 +8,9 @@ import { defaultThemeSettings, defaultThankYouSettings } from '@/lib/constants/t
 
 interface FormState {
   forms: Form[];
+  form: Form | null;
+  initializeForms: (forms: Form[]) => void,
+  setForm: (form: Form|null) => void, 
   addForm: (form: Form) => void;
   updateForm: (id: string, updates: Partial<Form>) => Promise<boolean>;
   deleteForm: (id: string) => void;
@@ -22,31 +25,23 @@ export const useFormStore = create<FormState>()(
   persist(
     (set, get) => ({
       forms: [],
-      
+      form: null,
+
+      initializeForms: forms=>set({forms}),
+      setForm: form=>set({form}),
       addForm: (form) =>
         set((state) => ({
           forms: [
             ...state.forms,
-            {
-              ...form,
-              themeSettings: {
-                ...defaultThemeSettings,
-                ...form.themeSettings
-              },
-              thankYouSettings: {
-                ...defaultThankYouSettings,
-                ...form.thankYouSettings
-              },
-              lastUpdated: new Date().toISOString(),
-            },
+            form,
           ],
         })),
+
 
       updateForm: async (id, updates) => {
         try {
           let processedUpdates = {
             ...updates,
-            lastUpdated: new Date().toISOString(),
           };
 
           // Handle theme settings updates
@@ -96,6 +91,7 @@ export const useFormStore = create<FormState>()(
             forms: state.forms.map((form) =>
               form.id === id ? { ...form, ...processedUpdates } : form
             ),
+            form: ({...state.form, ...processedUpdates as any})
           }));
 
           return true;
@@ -110,9 +106,9 @@ export const useFormStore = create<FormState>()(
           forms: state.forms.map((form) =>
             form.id === id
               ? {
-                  ...form,
-                  deletedAt: new Date().toISOString(),
-                }
+                ...form,
+                deletedAt: new Date().toISOString(),
+              }
               : form
           ),
         })),
@@ -122,10 +118,10 @@ export const useFormStore = create<FormState>()(
           forms: state.forms.map((form) =>
             form.id === id
               ? {
-                  ...form,
-                  deletedAt: undefined,
-                  lastUpdated: new Date().toISOString(),
-                }
+                ...form,
+                deletedAt: undefined,
+                lastUpdated: new Date().toISOString(),
+              }
               : form
           ),
         })),

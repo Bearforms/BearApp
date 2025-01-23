@@ -8,7 +8,6 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 const GoogleButton = ({ action = "Login" }: { action?: string; }) => {
-
 	const [isLoading, setIsLoading] = useState(false);
 
 	const handleContinueWithGoogle = async () => {

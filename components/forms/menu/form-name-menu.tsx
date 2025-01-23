@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useFormStore } from '@/stores/form-store';
 import { toast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
@@ -28,6 +28,7 @@ export function FormNameMenu({
   const form = useFormStore((state) =>
     state.forms.find((f) => f.id === formId)
   );
+  const params =  useParams();
   const addForm = useFormStore((state) => state.addForm);
   const deleteForm = useFormStore((state) => state.deleteForm);
 
@@ -51,13 +52,13 @@ export function FormNameMenu({
     };
     addForm(duplicatedForm);
     toast({ description: 'Form duplicated' });
-    router.push(`/edit/${duplicatedForm.id}`);
+    router.push(`/app/${params?.workspaceSlug}/edit/${duplicatedForm.id}`);
   };
 
   const handleDelete = () => {
     deleteForm(formId);
     toast({ description: 'Form moved to trash' });
-    router.push('/');
+    router.push(`/app/${params?.workspaceSlug}`);
   };
 
   return (

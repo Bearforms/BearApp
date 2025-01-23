@@ -6,10 +6,16 @@ import { Input } from '@/components/ui/input';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Button } from '@/components/ui/button';
-import { Loader } from 'lucide-react';
+import { AlertCircle, Loader } from 'lucide-react';
 import { createClient } from '@/supabase/client';
 import { useRouter } from 'next/navigation';
 import { toast } from '@/hooks/use-toast';
+import { useEffect, useState } from 'react';
+import {
+	Alert,
+	AlertDescription,
+	AlertTitle,
+} from "@/components/ui/alert";
 
 const formSchema = z.object({
 	email: z.string().min(1, "Email is required").email("Please enter a valid email"),
@@ -17,6 +23,7 @@ const formSchema = z.object({
 });
 
 const LoginForm = () => {
+	const [error, setError] = useState<{ title: string, description: string; } | null>(null);
 
 	const router = useRouter();
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -28,13 +35,13 @@ const LoginForm = () => {
 	});
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
+		setError(null);
 		const supabase = await createClient();
 		const { error } = await supabase.auth.signInWithPassword(values);
 		if (error) {
-			toast({
+			setError({
 				title: 'Failed to sign in',
-				description: error.message,
-				variant: 'destructive'
+				description: error.message
 			});
 			return;
 		}
@@ -46,9 +53,26 @@ const LoginForm = () => {
 		router.replace('/');
 	}
 
+	useEffect(() => {
+	  return () => {
+		setError(null)
+	  }
+	}, [])
+
 	return (
 		<Form {...form} >
 			<form className="my-4 space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
+				{
+					!!error && (
+						<Alert variant="destructive" className='mb-4'>
+							<AlertCircle className="h-4 w-4" />
+							<AlertTitle>{error.title}</AlertTitle>
+							<AlertDescription>
+								{error.description}
+							</AlertDescription>
+						</Alert>
+					)
+				}
 				<FormField
 					control={form.control}
 					name="email"

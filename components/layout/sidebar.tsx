@@ -13,7 +13,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { useParams, usePathname, useRouter } from 'next/navigation';
 import { useSidebarStore } from '@/stores/sidebar-store';
 import { WorkspaceDropdown } from '../workspaces/workspace-dropdown';
 import {
@@ -26,6 +26,8 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { createClient } from '@/supabase/client';
 import { useSession } from '@/hooks/use-session';
+import { useState } from 'react';
+import { NewWorkspaceModal } from '../forms/new-workspace-modal';
 
 const mainNavigation = [
   {
@@ -46,18 +48,19 @@ const mainNavigation = [
 ];
 
 export function Sidebar() {
+  const [showNewWorkspaceModal, setShowNewWorkspaceModal] = useState(false);
+
   const pathname = usePathname();
   const router = useRouter();
-  const { isOpen, toggleSidebar } = useSidebarStore();
+  const { isOpen } = useSidebarStore();
   const { user } = useSession();
+  const params = useParams();
 
   const handleLogout = async () => {
     const supabase = createClient();
     await supabase.auth.signOut();
     router.push('/auth/login');
   };
-
-  if (!user) return null;
 
   return (
     <div
@@ -72,7 +75,7 @@ export function Sidebar() {
           isOpen ? 'px-2' : 'px-0'
         )}
       >
-        <Link href="/" className="rounded-md">
+        <Link href={`/app/${params.workspaceSlug}`} className="rounded-md">
           <div
             className={cn(
               'px-2 h-10 flex items-center',
@@ -110,7 +113,7 @@ export function Sidebar() {
       </div>
 
       <div className="px-2 mt-3">
-        <WorkspaceDropdown />
+        <WorkspaceDropdown handleOpenCreateWorkspace={()=>setShowNewWorkspaceModal(true)} />
       </div>
 
       <nav className="flex-1 px-2 mt-5">
@@ -118,11 +121,11 @@ export function Sidebar() {
           {mainNavigation.map((item) => (
             <Link
               key={item.name}
-              href={item.href}
+              href={`/app/${params.workspaceSlug}${item.href}`}
               className={cn(
                 'flex justify-center items-center rounded-md w-full text-sm font-normal h-10 transition-all duration-300 ease-in-out',
                 isOpen ? 'justify-start px-3' : 'w-10 p-0',
-                pathname === item.href
+                (pathname === `/app/${params.workspaceSlug}${item.href}` || (pathname === `/app/${params.workspaceSlug}` && item.href === '/'))  
                   ? 'bg-neutral-100'
                   : 'hover:bg-neutral-50'
               )}
@@ -152,7 +155,7 @@ export function Sidebar() {
       <div className="px-2 mb-2">
         <div className="flex flex-col space-y-1">
           <Link
-            href="/settings"
+            href={`/app/${params.workspaceSlug}/settings`}
             className={cn(
               'flex justify-center items-center rounded-md w-full text-sm font-normal h-10 transition-all duration-300 ease-in-out',
               isOpen ? 'justify-start px-3' : 'w-10 p-0',
@@ -178,7 +181,8 @@ export function Sidebar() {
             </span>
           </Link>
           <Link
-            href="/feedback"
+            // href="/feedback"
+            href={`/app/${params.workspaceSlug}/feedback`}
             className={cn(
               'flex justify-center items-center rounded-md w-full text-sm font-normal h-10 transition-all duration-300 ease-in-out',
               isOpen ? 'justify-start px-3' : 'w-10 p-0',
@@ -259,6 +263,8 @@ export function Sidebar() {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+
+      <NewWorkspaceModal open={showNewWorkspaceModal} onOpenChange={setShowNewWorkspaceModal} />
     </div>
   );
 }
