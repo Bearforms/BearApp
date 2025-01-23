@@ -52,13 +52,13 @@ export function FormNameMenu({
     };
     addForm(duplicatedForm);
     toast({ description: 'Form duplicated' });
-    router.push(`/${params?.workspaceSlug}/edit/${duplicatedForm.id}`);
+    router.push(`/app/${params?.workspaceSlug}/edit/${duplicatedForm.id}`);
   };
 
   const handleDelete = () => {
     deleteForm(formId);
     toast({ description: 'Form moved to trash' });
-    router.push(`/${params?.workspaceSlug}`);
+    router.push(`/app/${params?.workspaceSlug}`);
   };
 
   return (

@@ -11,7 +11,7 @@ export const getUserWorkspaces = async () => {
 	}
 	const supabase = await createClient();
 
-	const { data, error } = await supabase.from('workspaces')
+	const { data } = await supabase.from('workspaces')
 		.select(`
 			*,
 			members:workspace_members!workspace_members_workspace_id_fkey (
@@ -19,13 +19,6 @@ export const getUserWorkspaces = async () => {
 				role
 			)
 		`)
-		// .neq('slug', '');
-
-	if (error) {
-		console.log("Error in getUserWorkspaces", error);
-	}
-
-	console.log({ data, error });
 	
 	return data ?? [];
 };

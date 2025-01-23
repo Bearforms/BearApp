@@ -66,7 +66,7 @@ export function FormBuilderHeader({
       };
       addForm(newForm);
       toast({ description: 'Form duplicated' });
-      router.push(`/${params?.workspaceSlug}/edit/${newForm.id}`);
+      router.push(`/app/${params?.workspaceSlug}/edit/${newForm.id}`);
     }
   };
 
@@ -74,7 +74,7 @@ export function FormBuilderHeader({
     if (form) {
       deleteForm(form.id);
       toast({ description: 'Form moved to trash' });
-      router.push(`/${params?.workspaceSlug}`);
+      router.push(`/app/${params?.workspaceSlug}`);
     }
   };
 
@@ -94,7 +94,7 @@ export function FormBuilderHeader({
         </Button>
         <div className="flex items-center text-sm">
           <Link
-            href={`/${params.workspaceSlug}`}
+            href={`/app/${params.workspaceSlug}`}
             className="text-neutral-500 hover:text-neutral-900 transition-colors"
           >
             Forms

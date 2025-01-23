@@ -65,6 +65,7 @@ export async function POST(request: Request) {
 			.insert({
 				name: workspaceName,
 				slug: workspaceSlug,
+				subdomain: workspaceSlug,
 				owner_id: userId,
 				is_public: false
 			})

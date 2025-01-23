@@ -7,14 +7,21 @@ import { FormBuilder } from '@/components/forms/form-builder';
 import { useEffect, useState } from 'react';
 import { FormField, ThemeSettings, ThankYouSettings } from '@/types/form';
 import { ButtonSettings } from '@/types/button';
+import { useMutation } from '@tanstack/react-query';
+import { getWorkspacesForm } from '@/actions/workspaces/getWorkspacesForm';
+import { Skeleton } from '@/components/ui/skeleton';
+import { updateForm } from '@/actions/workspaces/updateForm';
 
 export default function EditFormPage() {
+
+  const [isLoadingForms, setIsLoadingForm] = useState(false);
+  const [synced, setSynced] = useState(true);
+
   const params = useParams();
   const formId = params.id as string;
-  const form = useFormStore((state) =>
-    state.forms.find((f) => f.id === formId)
-  );
-  const updateForm = useFormStore((state) => state.updateForm);
+  const updateFormOnStore = useFormStore((state) => state.updateForm);
+  const setForm = useFormStore((state) => state.setForm);
+  const form = useFormStore((state) => state.form);
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -22,6 +29,35 @@ export default function EditFormPage() {
   const [themeSettings, setThemeSettings] = useState<ThemeSettings>();
   const [buttonSettings, setButtonSettings] = useState<ButtonSettings>();
   const [thankYouSettings, setThankYouSettings] = useState<ThankYouSettings>();
+
+
+  const { isPending, mutate } = useMutation({
+    mutationFn: getWorkspacesForm,
+    onSuccess: (data) => {
+      setForm(data);
+      setIsLoadingForm(false);
+    },
+    onError: () => {
+      setIsLoadingForm(false);
+    }
+  });
+
+  const { isPending: isPendingUpdate, mutate: mutateUpdate } = useMutation({
+    mutationFn: updateForm,
+    onSuccess: (data) => {
+      setIsLoadingForm(false);
+      setSynced(true);
+    },
+    onError: () => {
+      setIsLoadingForm(false);
+    }
+  });
+
+  useEffect(() => {
+    setForm(null);
+    if (params?.workspaceSlug && formId) mutate({ workspaceSlug: params?.workspaceSlug as string, formId: formId as string });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mutate, params?.workspaceSlug, formId]);
 
   // Load form data when component mounts or form changes
   useEffect(() => {
@@ -37,12 +73,48 @@ export default function EditFormPage() {
 
   // Update form when data changes
   const handleUpdate = async (updates: any) => {
+    setSynced(false);
     if (form) {
-      await updateForm(form.id, updates);
+      await updateFormOnStore(form!.id, updates);
     }
   };
 
-  if (!form) return null;
+  useEffect(() => {
+
+    if (!form?.id) return;
+
+    const interval = setInterval(() => {
+      console.log("Updating: ", form);
+      // mutateUpdate({ formId: id, ...data });
+    }, 4000);
+
+    return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form?.id]);
+
+  if (isPending || isLoadingForms) {
+    return (
+      <div className="w-full lg:w-8/12 bg-white mx-auto h-full rounded-md">
+        <div className="space-y-8 max-w-[640px] mx-auto px-5 py-20">
+          <div className="space-y-4">
+            <Skeleton className="h-8 w-3/4" />
+            <Skeleton className="h-5 w-1/2" />
+          </div>
+
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="space-y-2">
+              <Skeleton className="h-5 w-1/4" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+          ))}
+
+          <Skeleton className="h-10 w-24" />
+        </div>
+      </div>
+    );
+  }
+
+  if (!form) return null;  
 
   return (
     <FormPageLayout formId={formId}>
@@ -78,11 +150,11 @@ export default function EditFormPage() {
           handleUpdate({ thankYouSettings: value });
         }}
         isThemeSettingsOpen={false}
-        onThemeSettingsOpenChange={() => {}}
+        onThemeSettingsOpenChange={() => { }}
         isPreviewOpen={false}
-        onPreviewOpenChange={() => {}}
+        onPreviewOpenChange={() => { }}
         isShareOpen={false}
-        onShareOpenChange={() => {}}
+        onShareOpenChange={() => { }}
       />
     </FormPageLayout>
   );

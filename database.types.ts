@@ -9,6 +9,48 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      custom_domains: {
+        Row: {
+          added_by: string
+          created_at: string
+          domain: string
+          id: string
+          updated_at: string
+          workspace_id: string
+        }
+        Insert: {
+          added_by: string
+          created_at?: string
+          domain: string
+          id?: string
+          updated_at?: string
+          workspace_id: string
+        }
+        Update: {
+          added_by?: string
+          created_at?: string
+          domain?: string
+          id?: string
+          updated_at?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "custom_domains_added_by_fkey"
+            columns: ["added_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "custom_domains_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           avatar_url: string | null
@@ -36,26 +78,78 @@ export type Database = {
         }
         Relationships: []
       }
+      workspace_invitations: {
+        Row: {
+          created_at: string
+          email: string
+          id: number
+          invited_by: string
+          role: Database["public"]["Enums"]["user_role"]
+          workspace_id: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: number
+          invited_by: string
+          role: Database["public"]["Enums"]["user_role"]
+          workspace_id: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: number
+          invited_by?: string
+          role?: Database["public"]["Enums"]["user_role"]
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workspace_invitations_invited_by_fkey"
+            columns: ["invited_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workspace_invitations_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       workspace_members: {
         Row: {
+          added_by: string | null
           created_at: string
           role: Database["public"]["Enums"]["user_role"]
           user_id: string
           workspace_id: string
         }
         Insert: {
+          added_by?: string | null
           created_at?: string
           role?: Database["public"]["Enums"]["user_role"]
           user_id: string
           workspace_id: string
         }
         Update: {
+          added_by?: string | null
           created_at?: string
           role?: Database["public"]["Enums"]["user_role"]
           user_id?: string
           workspace_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "workspace_members_added_by_fkey"
+            columns: ["added_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "workspace_members_user_id_fkey"
             columns: ["user_id"]
@@ -81,6 +175,7 @@ export type Database = {
           name: string | null
           owner_id: string
           slug: string
+          subdomain: string
           updated_at: string | null
           updated_by: string | null
         }
@@ -92,6 +187,7 @@ export type Database = {
           name?: string | null
           owner_id?: string
           slug: string
+          subdomain: string
           updated_at?: string | null
           updated_by?: string | null
         }
@@ -103,6 +199,7 @@ export type Database = {
           name?: string | null
           owner_id?: string
           slug?: string
+          subdomain?: string
           updated_at?: string | null
           updated_by?: string | null
         }

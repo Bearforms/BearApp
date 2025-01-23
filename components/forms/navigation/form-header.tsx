@@ -49,7 +49,7 @@ export function FormHeader({
           </Button>
           <div className="flex items-center text-sm w-full">
             <Link
-              href={`/${params.workspaceSlug}`}
+              href={`/app/${params.workspaceSlug}`}
               className="text-neutral-500 hover:text-neutral-900 transition-colors"
             >
               Forms

@@ -63,13 +63,13 @@ export function FormNameMenu({ formId, name }: FormNameMenuProps) {
     };
     addForm(duplicatedForm);
     toast({ description: 'Form duplicated' });
-    router.push(`/${params?.workspaceSlug}/edit/${duplicatedForm.id}`);
+    router.push(`/app/${params?.workspaceSlug}/edit/${duplicatedForm.id}`);
   };
 
   const handleDelete = () => {
     deleteForm(formId);
     toast({ description: 'Form moved to trash' });
-    router.push(`/${params?.workspaceSlug}`);
+    router.push(`/app/${params?.workspaceSlug}`);
   };
 
   const handleCopyLink = async () => {

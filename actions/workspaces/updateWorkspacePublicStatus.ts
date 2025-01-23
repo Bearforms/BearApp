@@ -23,5 +23,5 @@ export const updateWorkspacePublicStatus = async ({ workspaceId, isPublic }: { w
 		throw new Error('Failed to update workspace public status');
 	}
 
-	revalidatePath('/public/workspaces/[workspaceSlug]', 'page');
+	revalidatePath('/app/[workspaceSlug]', 'page');
 };

@@ -75,7 +75,7 @@ export function Sidebar() {
           isOpen ? 'px-2' : 'px-0'
         )}
       >
-        <Link href={`/${params.workspaceSlug}`} className="rounded-md">
+        <Link href={`/app/${params.workspaceSlug}`} className="rounded-md">
           <div
             className={cn(
               'px-2 h-10 flex items-center',
@@ -121,11 +121,11 @@ export function Sidebar() {
           {mainNavigation.map((item) => (
             <Link
               key={item.name}
-              href={`/${params.workspaceSlug}${item.href}`}
+              href={`/app/${params.workspaceSlug}${item.href}`}
               className={cn(
                 'flex justify-center items-center rounded-md w-full text-sm font-normal h-10 transition-all duration-300 ease-in-out',
                 isOpen ? 'justify-start px-3' : 'w-10 p-0',
-                (pathname === `/${params.workspaceSlug}${item.href}` || (pathname === `/${params.workspaceSlug}` && item.href === '/'))  
+                (pathname === `/app/${params.workspaceSlug}${item.href}` || (pathname === `/app/${params.workspaceSlug}` && item.href === '/'))  
                   ? 'bg-neutral-100'
                   : 'hover:bg-neutral-50'
               )}
@@ -155,7 +155,7 @@ export function Sidebar() {
       <div className="px-2 mb-2">
         <div className="flex flex-col space-y-1">
           <Link
-            href={`/${params.workspaceSlug}/settings`}
+            href={`/app/${params.workspaceSlug}/settings`}
             className={cn(
               'flex justify-center items-center rounded-md w-full text-sm font-normal h-10 transition-all duration-300 ease-in-out',
               isOpen ? 'justify-start px-3' : 'w-10 p-0',
@@ -182,7 +182,7 @@ export function Sidebar() {
           </Link>
           <Link
             // href="/feedback"
-            href={`/${params.workspaceSlug}/feedback`}
+            href={`/app/${params.workspaceSlug}/feedback`}
             className={cn(
               'flex justify-center items-center rounded-md w-full text-sm font-normal h-10 transition-all duration-300 ease-in-out',
               isOpen ? 'justify-start px-3' : 'w-10 p-0',

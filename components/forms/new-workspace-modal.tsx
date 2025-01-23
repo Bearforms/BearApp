@@ -36,7 +36,7 @@ export function NewWorkspaceModal({ open, onOpenChange }: NewWorkspaceModalProps
       onOpenChange(false);
       refetchWorkspaces();
 
-      if (data.slug)  router.push(`/${data.slug}`);
+      if (data.slug)  router.push(`/app/${data.slug}`);
     }
   });
 

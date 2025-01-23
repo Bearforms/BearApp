@@ -80,7 +80,7 @@ export const addWorkspaceMember = async ({ workspaceId, email, role }: { workspa
 			throw memberError;
 		}
 
-		revalidatePath('/public/workspaces/[workspaceSlug]/settings', 'page');
+		revalidatePath('/app/[workspaceSlug]/settings', 'page');
 	}
 
 };
