@@ -34,7 +34,7 @@ export async function middleware(request: NextRequest) {
   // Get subdomain
   const subdomain = getSubdomain(hostname);
 
-  if (!subdomain || RESERVED_SUBDOMAINS.includes(subdomain)) {    
+  if (!subdomain || RESERVED_SUBDOMAINS.includes(subdomain) || hostname.includes(".vercel.app")) {    
     // Update session without tenant context
     return await updateSession(request);
   }
