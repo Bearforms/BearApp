@@ -1,7 +1,6 @@
 'use client';
 
 import { useParams, usePathname } from 'next/navigation';
-import { cn } from '@/lib/utils';
 import { FormNavLink } from './form-nav-link';
 
 export function FormNav() {
@@ -12,20 +11,20 @@ export function FormNav() {
   return (
     <nav className="flex p-0 space-x-1.5">
       <FormNavLink 
-        href={`/edit/${formId}`}
-        isActive={pathname === `/edit/${formId}`}
+        href={`/${params.workspaceSlug}/edit/${formId}`}
+        isActive={pathname === `/${params.workspaceSlug}/edit/${formId}`}
       >
         Form
       </FormNavLink>
       <FormNavLink 
-        href={`/responses/${formId}`}
-        isActive={pathname === `/responses/${formId}`}
+        href={`/${params.workspaceSlug}/responses/${formId}`}
+        isActive={pathname === `/${params.workspaceSlug}/responses/${formId}`}
       >
         Responses
       </FormNavLink>
       <FormNavLink 
-        href={`/integrations/${formId}`}
-        isActive={pathname === `/integrations/${formId}`}
+        href={`/${params.workspaceSlug}/integrations/${formId}`}
+        isActive={pathname === `/${params.workspaceSlug}/integrations/${formId}`}
       >
         Integrations
       </FormNavLink>

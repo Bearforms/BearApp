@@ -1,6 +1,3 @@
-'use client';
-
-import { Sidebar } from '@/components/layout/sidebar';
 import { SettingsHeader } from '@/components/settings/settings-header';
 import { AccountSettings } from '@/components/settings/account/account-settings';
 import { WorkspaceSettings } from '@/components/settings/workspace/workspace-settings';
@@ -8,11 +5,13 @@ import { DomainSettings } from '@/components/settings/domain/domain-settings';
 import { BillingSettings } from '@/components/settings/billing/billing-settings';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { User, Building2, Globe, CreditCard } from 'lucide-react';
+import { getUserWorkspaceBySlug } from '@/actions/workspaces/getUserWorkspaceBySlug';
 
-export default function SettingsPage() {
+export default async function SettingsPage({params}: {params: {workspaceSlug: string}}) {
+
+  const workspace = await getUserWorkspaceBySlug(params.workspaceSlug);  
+
   return (
-    <div className="flex h-screen bg-neutral-50">
-      <Sidebar />
       <main className="flex-1 flex flex-col min-w-0">
         <SettingsHeader />
         <div className="flex-1 overflow-y-auto p-8">
@@ -57,7 +56,7 @@ export default function SettingsPage() {
                 value="workspace"
                 className="mt-2 p-6 space-y-4 border border-neutral-200 rounded-md bg-white focus-visible:outline-none"
               >
-                <WorkspaceSettings />
+                <WorkspaceSettings workspace={workspace} />
               </TabsContent>
 
               <TabsContent
@@ -77,6 +76,5 @@ export default function SettingsPage() {
           </div>
         </div>
       </main>
-    </div>
   );
 }

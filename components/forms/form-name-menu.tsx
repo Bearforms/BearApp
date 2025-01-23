@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useFormStore } from '@/stores/form-store';
 import { Button } from '@/components/ui/button';
 import {
@@ -35,6 +35,7 @@ export function FormNameMenu({ formId, name }: FormNameMenuProps) {
   const form = useFormStore((state) =>
     state.forms.find((f) => f.id === formId)
   );
+  const params = useParams();
   const updateForm = useFormStore((state) => state.updateForm);
   const addForm = useFormStore((state) => state.addForm);
   const deleteForm = useFormStore((state) => state.deleteForm);
@@ -62,13 +63,13 @@ export function FormNameMenu({ formId, name }: FormNameMenuProps) {
     };
     addForm(duplicatedForm);
     toast({ description: 'Form duplicated' });
-    router.push(`/edit/${duplicatedForm.id}`);
+    router.push(`/${params?.workspaceSlug}/edit/${duplicatedForm.id}`);
   };
 
   const handleDelete = () => {
     deleteForm(formId);
     toast({ description: 'Form moved to trash' });
-    router.push('/');
+    router.push(`/${params?.workspaceSlug}`);
   };
 
   const handleCopyLink = async () => {

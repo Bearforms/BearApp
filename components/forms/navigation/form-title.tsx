@@ -22,7 +22,7 @@ export function FormTitle({ title }: FormTitleProps) {
   return (
     <>
       <div className="flex items-center text-sm">
-        <Link href="/" className="text-neutral-500 hover:text-neutral-900 transition-colors">
+        <Link href={`/${params.workspaceSlug}`} className="text-neutral-500 hover:text-neutral-900 transition-colors">
           Forms
         </Link>
         <ChevronRight className="h-4 w-4 mx-1 text-neutral-400" />

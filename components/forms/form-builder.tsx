@@ -4,7 +4,6 @@ import { useState, useRef } from 'react';
 import { FormTitle } from './form-title';
 import { FormDescription } from './form-description';
 import { FormFieldSettings } from './settings/field-settings/field-settings';
-import { ThemeSettings } from './settings/theme-settings';
 import { FormLogo } from './form-logo';
 import { ButtonSettings } from './settings/button-settings';
 import { ThankYouSettings } from './settings/thank-you-settings';
@@ -15,7 +14,6 @@ import {
   ThankYouSettings as ThankYouSettingsType,
   ThemeSettings as ThemeSettingsType,
 } from '@/types/form';
-import { useFormTheme } from '@/hooks/use-form-theme';
 import { useGoogleFonts } from '@/hooks/use-google-fonts';
 import { FormContent } from './form-builder/form-content';
 import { useFormStyles } from './form-builder/use-form-styles';

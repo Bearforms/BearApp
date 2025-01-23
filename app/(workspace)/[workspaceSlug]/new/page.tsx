@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { Sidebar } from '@/components/layout/sidebar';
 import { FormBuilder } from '@/components/forms/form-builder';
 import { FormBuilderHeader } from '@/components/forms/form-builder-header';
 import { FormPreview } from '@/components/forms/preview/form-preview';
@@ -23,8 +22,6 @@ export default function NewFormPage() {
   });
 
   return (
-    <div className="flex h-screen bg-neutral-50">
-      <Sidebar />
       <main className="flex-1 flex flex-col min-w-0">
         <FormBuilderHeader
           onThemeSettingsOpen={() => setIsThemeSettingsOpen(true)}
@@ -64,6 +61,5 @@ export default function NewFormPage() {
           />
         </div>
       </main>
-    </div>
   );
 }

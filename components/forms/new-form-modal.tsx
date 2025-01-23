@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { nanoid } from 'nanoid';
 import { useFormStore } from '@/stores/form-store';
 import { Button } from '@/components/ui/button';
@@ -25,6 +25,7 @@ export function NewFormModal({ open, onOpenChange }: NewFormModalProps) {
   const [name, setName] = useState('');
   const [isCreating, setIsCreating] = useState(false);
   const router = useRouter();
+  const params = useParams();
   const addForm = useFormStore((state) => state.addForm);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -53,7 +54,7 @@ export function NewFormModal({ open, onOpenChange }: NewFormModalProps) {
 
     try {
       addForm(newForm as any);
-      router.push(`/edit/${formId}`);
+      router.push(`/${params?.workspaceSlug}/edit/${formId}`);
     } finally {
       setName(''); // Reset the input
       onOpenChange(false); // Close modal after navigation

@@ -10,19 +10,42 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { ChevronsUpDown, Plus } from 'lucide-react';
+import { Box, ChevronsUpDown, Plus } from 'lucide-react';
 import { useWorkspaceStore } from '@/stores/workspace-store';
-import { WorkspaceIcon } from './workspace-icon';
 import { WorkspaceItem } from './workspace-item';
 import { cn } from '@/lib/utils';
 import { useSidebarStore } from '@/stores/sidebar-store';
 import { useWorkspaces } from '@/hooks/use-workspaces';
+import { useParams, useRouter } from 'next/navigation';
+import { useEffect, useMemo } from 'react';
 
-export function WorkspaceDropdown() {
+interface WorkspaceDropdownProps {
+  handleOpenCreateWorkspace: () => void;
+}
+export function WorkspaceDropdown({handleOpenCreateWorkspace}: WorkspaceDropdownProps) {
   const { activeWorkspace, setActiveWorkspace } = useWorkspaceStore();
   const { isOpen } = useSidebarStore();
 
-  const {workspaces} = useWorkspaces();  
+  const { workspaces } = useWorkspaces();  
+  const router = useRouter();
+  const { workspaceSlug } = useParams();
+
+  const activeWorkspaceDetails = useMemo(() => {
+    return workspaces.find((workspace) => workspace.slug === activeWorkspace);
+  }, [workspaces, activeWorkspace]);
+
+  useEffect(() => {
+    if (workspaceSlug) {
+        setActiveWorkspace(workspaceSlug as string);
+    }
+
+    return () => {
+      setActiveWorkspace(null);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [workspaceSlug])
+  
+
 
   return (
     <DropdownMenu>
@@ -37,11 +60,11 @@ export function WorkspaceDropdown() {
             'data-[state=open]:bg-neutral-100'
           )}
         >
-          <WorkspaceIcon workspace={activeWorkspace} />
+          <Box className="h-5 w-5 text-neutral-500" strokeWidth={2} />
           {isOpen && (
             <>
               <span className="text-sm font-normal flex-1 text-left truncate">
-                {activeWorkspace.name}
+                {activeWorkspaceDetails?.name ?? 'Workspaces'}
               </span>
               <ChevronsUpDown
                 className="h-4 w-4 text-neutral-500 flex-shrink-0"
@@ -66,16 +89,17 @@ export function WorkspaceDropdown() {
               <WorkspaceItem
                 key={workspace.id}
                 workspace={workspace}
-                isActive={workspace.id === activeWorkspace.id}
+                isActive={workspace.id === activeWorkspace}
                 onClick={() => {
                   // setActiveWorkspace(workspace);
+                  router.push(`/${workspace.slug}`);
                 }}
               />
             ))}
           </div>
         </ScrollArea>
         <DropdownMenuSeparator />
-        <DropdownMenuItem className="flex items-center gap-2 py-2 px-2 cursor-pointer">
+        <DropdownMenuItem onClick={handleOpenCreateWorkspace} className="flex items-center gap-2 py-2 px-2 cursor-pointer">
           <Plus className="h-5 w-5 text-neutral-500" strokeWidth={2} />
           <span className="text-sm">Create workspace</span>
         </DropdownMenuItem>
