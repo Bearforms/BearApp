@@ -13,5 +13,5 @@ export default async function HomePage() {
   if (!userWorkspaces || userWorkspaces.length === 0) redirect('/workspaces/create');
   
   const workspaceWithSlug = userWorkspaces.find(workspace => workspace.slug);
-  redirect(`/app/${workspaceWithSlug?.slug}`);
+  redirect(`/${workspaceWithSlug?.slug}`);
 }

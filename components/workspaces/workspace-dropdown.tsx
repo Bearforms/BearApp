@@ -91,8 +91,7 @@ export function WorkspaceDropdown({handleOpenCreateWorkspace}: WorkspaceDropdown
                 workspace={workspace}
                 isActive={workspace.id === activeWorkspace}
                 onClick={() => {
-                  // setActiveWorkspace(workspace);
-                  router.push(`/${workspace.slug}`);
+                  router.push(`/app/${workspace.slug}`);
                 }}
               />
             ))}

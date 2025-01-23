@@ -43,7 +43,7 @@ export default function ThankYouPage() {
       <main className="flex-1 flex flex-col min-w-0">
         <div className="flex items-center justify-between px-6 h-12">
           <Link
-            href={`/${params.workspaceSlug}`}
+            href={`/app/${params.workspaceSlug}`}
             className="text-sm text-neutral-500 hover:text-neutral-900"
           >
             <Button variant="ghost" size="sm" className="gap-2">
@@ -58,7 +58,7 @@ export default function ThankYouPage() {
               <HeadingField field={headingField as FormField} preview />
               <ParagraphField field={paragraphField} preview />
               <div className="pt-4">
-                <Link href={`/${params.workspaceSlug}`}>
+                <Link href={`/app/${params.workspaceSlug}`}>
                   <Button>Create Another Form</Button>
                 </Link>
               </div>

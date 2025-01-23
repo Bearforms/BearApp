@@ -63,7 +63,7 @@ export default async function SettingsPage({params}: {params: {workspaceSlug: st
                 value="domain"
                 className="mt-2 p-6 space-y-4 border border-neutral-200 rounded-md bg-white focus-visible:outline-none"
               >
-                <DomainSettings />
+                <DomainSettings workspace={workspace}  />
               </TabsContent>
 
               <TabsContent

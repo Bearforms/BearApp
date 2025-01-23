@@ -27,6 +27,7 @@ export const createWorkspace = async (name: string) => {
 		name,
 		owner_id: user.id,
 		slug: workspaceSlug,
+		subdomain: workspaceSlug,
 		is_public: false,
 		description: null,
 		updated_by: user.id,
@@ -51,6 +52,6 @@ export const createWorkspace = async (name: string) => {
 		throw memberError;
 	}
 
-	revalidatePath('/public/workspaces/[workspaceSlug]', 'page');
+	revalidatePath('/app/[workspaceSlug]', 'page');
 	return workspaceData;
 };

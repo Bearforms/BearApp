@@ -2,7 +2,6 @@
 "use server";
 
 import { getCurrentUser } from '@/lib/session';
-import { createAdminClient } from '@/supabase/admin';
 import { createClient } from '@/supabase/server';
 import { revalidatePath } from 'next/cache';
 
@@ -36,6 +35,6 @@ export const updateWorkspace = async ({ workspaceId, name, description }:{worksp
 		throw workspaceError;
 	}
 
-	revalidatePath('/public/workspaces/[workspaceSlug]/settings', 'page');
+	revalidatePath('/app/[workspaceSlug]/settings', 'page');
 	return workspaceData;
 };

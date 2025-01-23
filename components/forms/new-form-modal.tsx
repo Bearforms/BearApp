@@ -6,7 +6,7 @@ import { nanoid } from 'nanoid';
 import { useFormStore } from '@/stores/form-store';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Loader2 } from 'lucide-react';
+import { AlertCircle, Loader2 } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
@@ -15,6 +15,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { defaultThankYouSettings, defaultThemeSettings } from '@/lib/constants/theme-defaults';
+import { useMutation } from '@tanstack/react-query';
+import { createForm } from '@/actions/forms/createForm';
+import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
 
 interface NewFormModalProps {
   open: boolean;
@@ -23,43 +27,32 @@ interface NewFormModalProps {
 
 export function NewFormModal({ open, onOpenChange }: NewFormModalProps) {
   const [name, setName] = useState('');
-  const [isCreating, setIsCreating] = useState(false);
   const router = useRouter();
   const params = useParams();
   const addForm = useFormStore((state) => state.addForm);
 
+  const [error, setError] = useState<string | null>(null);
+  const { isPending, mutate } = useMutation({
+    mutationFn: createForm,
+    onSuccess: (data) => {
+      console.log(data);
+
+      onOpenChange(false);
+      addForm(data as any);
+      router.push(`/app/${params?.workspaceSlug}/edit/${data.id}`);
+    },
+    onError: (error) => {
+      setError(error.message);
+    }
+  });
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!name.trim() || isCreating) return;
+    if (!name.trim()) return;
 
-    setIsCreating(true);
-
-    const formId = nanoid();
-    const newForm = {
-      id: formId,
-      name,
-      title: '',
-      description: '',
-      responses: 0,
-      lastUpdated: new Date().toISOString(),
-      fields: [],
-      themeSettings: {
-        coverType: 'color' as const,
-        showLogo: true,
-        coverImage: '',
-        coverColor: '#f3f4f6',
-      },
-    };
-
-    try {
-      addForm(newForm as any);
-      router.push(`/${params?.workspaceSlug}/edit/${formId}`);
-    } finally {
-      setName(''); // Reset the input
-      onOpenChange(false); // Close modal after navigation
-      setIsCreating(false);
-    }
+    setError(null);
+    mutate({ name, workspaceSlug: params?.workspaceSlug as string });
   };
 
   return (
@@ -72,6 +65,18 @@ export function NewFormModal({ open, onOpenChange }: NewFormModalProps) {
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
+
+          {
+            !!error && (
+              <Alert variant="destructive" className='mb-4'>
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Failed</AlertTitle>
+                <AlertDescription>
+                  {error}
+                </AlertDescription>
+              </Alert>
+            )
+          }
           <div className="py-4">
             <Input
               value={name}
@@ -79,7 +84,7 @@ export function NewFormModal({ open, onOpenChange }: NewFormModalProps) {
               placeholder="Form name"
               className="w-full"
               autoFocus
-              disabled={isCreating}
+              disabled={isPending}
             />
           </div>
           <DialogFooter>
@@ -87,12 +92,12 @@ export function NewFormModal({ open, onOpenChange }: NewFormModalProps) {
               type="button"
               variant="outline"
               onClick={() => onOpenChange(false)}
-              disabled={isCreating}
+              disabled={isPending}
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={!name.trim() || isCreating}>
-              {isCreating ? (
+            <Button type="submit" disabled={!name.trim() || isPending}>
+              {isPending ? (
                 <>
                   <Loader2
                     className="mr-2 h-4 w-4 animate-spin"

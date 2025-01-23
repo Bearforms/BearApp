@@ -11,20 +11,20 @@ export function FormNav() {
   return (
     <nav className="flex p-0 space-x-1.5">
       <FormNavLink 
-        href={`/${params.workspaceSlug}/edit/${formId}`}
-        isActive={pathname === `/${params.workspaceSlug}/edit/${formId}`}
+        href={`/app/${params.workspaceSlug}/edit/${formId}`}
+        isActive={pathname === `/app/${params.workspaceSlug}/edit/${formId}`}
       >
         Form
       </FormNavLink>
       <FormNavLink 
-        href={`/${params.workspaceSlug}/responses/${formId}`}
-        isActive={pathname === `/${params.workspaceSlug}/responses/${formId}`}
+        href={`/app/${params.workspaceSlug}/responses/${formId}`}
+        isActive={pathname === `/app/${params.workspaceSlug}/responses/${formId}`}
       >
         Responses
       </FormNavLink>
       <FormNavLink 
-        href={`/${params.workspaceSlug}/integrations/${formId}`}
-        isActive={pathname === `/${params.workspaceSlug}/integrations/${formId}`}
+        href={`/app/${params.workspaceSlug}/integrations/${formId}`}
+        isActive={pathname === `/app/${params.workspaceSlug}/integrations/${formId}`}
       >
         Integrations
       </FormNavLink>

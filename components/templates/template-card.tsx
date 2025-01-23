@@ -53,7 +53,7 @@ export function TemplateCard({ template }: TemplateCardProps) {
     };
 
     addForm(newForm as Form);
-    router.push(`/${params?.workspaceSlug}/edit/${newForm.id}`);
+    router.push(`/app/${params?.workspaceSlug}/edit/${newForm.id}`);
   };
 
   const category = templateCategories.find((c) => c.id === template.categoryId);

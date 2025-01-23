@@ -36,6 +36,9 @@ export const getUserWorkspaceBySlug = async (idOrSlug: string) => {
 						last_name,
 						avatar_url
 					)
+				),
+				customDomains:custom_domains!custom_domains_workspace_id_fkey (
+					*
 				)
 		`)
 		// .eq('owner_id', user.id)
