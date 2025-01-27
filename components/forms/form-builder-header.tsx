@@ -101,11 +101,6 @@ export function FormBuilderHeader({
           </Link>
           <ChevronRight className="h-4 w-4 mx-1 text-neutral-400" />
           <FormNameMenu
-            formId={params?.id as string}
-            name={form?.name || 'New form'}
-            // onNameChange={handleNameChange}
-            // onDuplicate={handleDuplicate}
-            // onDelete={handleDelete}
           />
         </div>
       </div>
