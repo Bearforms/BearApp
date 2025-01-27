@@ -80,19 +80,6 @@ export default function EditFormPage() {
     }
   };
 
-  useEffect(() => {
-
-    if (!form?.id) return;
-
-    const interval = setInterval(() => {
-      console.log("Updating: ", form);
-      // mutateUpdate({ formId: id, ...data });
-    }, 4000);
-
-    return () => clearInterval(interval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form?.id]);
-
   if (isPending || isLoadingForms) {
     return (
       <div className="flex-1 flex flex-col min-w-0">

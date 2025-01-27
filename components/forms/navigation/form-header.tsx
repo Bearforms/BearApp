@@ -2,7 +2,7 @@
 
 import { useParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { PanelLeft } from 'lucide-react';
+import { Loader, PanelLeft } from 'lucide-react';
 import { useSidebarStore } from '@/stores/sidebar-store';
 import { FormNav } from './form-nav';
 import { FormTitle } from './form-title';
@@ -10,27 +10,27 @@ import { FormHeaderActions } from './form-header-actions';
 import { FormNameMenu } from '../form-name-menu';
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
+import { useFormStore } from '@/stores/form-store';
+import { useCallback, useEffect, useState } from 'react';
+import { debounce } from "lodash";
 
 interface FormHeaderProps {
   title?: string;
   showNav?: boolean;
-  onThemeSettingsOpen?: () => void;
   onPreviewOpen?: () => void;
-  onShareOpen?: () => void;
-  onSettingsOpen?: () => void;
+  handleOpenAction: (action: "themeSettings" | "share" | "settings" | null) => void;
 }
 
 export function FormHeader({
   title,
   showNav = true,
-  onThemeSettingsOpen,
   onPreviewOpen,
-  onShareOpen,
-  onSettingsOpen,
+  handleOpenAction
 }: FormHeaderProps) {
   const { toggleSidebar } = useSidebarStore();
   const params = useParams();
   const formId = params.id as string;
+  const saveStatus = useFormStore(state => state.saveStatus);
 
   return (
     <div className="flex items-center justify-between px-7 h-12 bg-white border-b border-neutral-200">
@@ -55,7 +55,23 @@ export function FormHeader({
               Forms
             </Link>
             <ChevronRight className="h-4 w-4 mx-1 text-neutral-400" />
-            <FormNameMenu formId={formId} name={title || 'Untitled Form'} />
+
+            <span className="text-sm truncate">{title ?? 'Untitled form'}</span>
+
+            <p className='flex items-center gap-1 ml-4'>
+
+              {
+                saveStatus.saving && (
+                  <>
+                    <Loader className='animate-spin h-5 w-5' />
+
+                    <span className="text-sm text-neutral-600">Saving...</span>
+                  </>
+                )
+              }
+              {saveStatus.isSaved && <span className="text-sm text-neutral-600">Saved</span>}
+            </p>
+
           </div>
         </div>
       </div>
@@ -68,10 +84,8 @@ export function FormHeader({
 
       <div className="w-1/3 flex justify-end">
         <FormHeaderActions
-          onThemeSettingsOpen={onThemeSettingsOpen}
           onPreviewOpen={onPreviewOpen}
-          onShareOpen={onShareOpen}
-          onSettingsOpen={onSettingsOpen}
+          handleOpenAction={handleOpenAction}
         />
       </div>
     </div>

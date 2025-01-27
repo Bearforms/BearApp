@@ -8,11 +8,6 @@ export const useWorkspaces = () => {
 
 	const { user } = useSession();
 
-	console.log('user', user);
-	console.log('workspaces', workspaces);
-
-
-
 	const fetchWorkspaces = async () => {
 		const supabase = await createClient();
 		const { data, error } = await supabase.from('workspaces')
