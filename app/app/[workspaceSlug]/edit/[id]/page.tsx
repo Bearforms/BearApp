@@ -11,6 +11,7 @@ import { useMutation } from '@tanstack/react-query';
 import { getWorkspacesForm } from '@/actions/workspaces/getWorkspacesForm';
 import { Skeleton } from '@/components/ui/skeleton';
 import { updateForm } from '@/actions/workspaces/updateForm';
+import { HeaderSkeleton } from '@/components/skeletons/header-skeleton';
 
 export default function EditFormPage() {
 
@@ -94,27 +95,31 @@ export default function EditFormPage() {
 
   if (isPending || isLoadingForms) {
     return (
-      <div className="w-full lg:w-8/12 bg-white mx-auto h-full rounded-md">
-        <div className="space-y-8 max-w-[640px] mx-auto px-5 py-20">
-          <div className="space-y-4">
-            <Skeleton className="h-8 w-3/4" />
-            <Skeleton className="h-5 w-1/2" />
-          </div>
-
-          {[...Array(4)].map((_, i) => (
-            <div key={i} className="space-y-2">
-              <Skeleton className="h-5 w-1/4" />
-              <Skeleton className="h-10 w-full" />
+      <div className="flex-1 flex flex-col min-w-0">
+        <HeaderSkeleton />
+        <div className="w-full lg:w-8/12 bg-white mx-auto h-full rounded-md">
+          <div className="space-y-8 max-w-[640px] mx-auto px-5 py-20">
+            <div className="space-y-4">
+              <Skeleton className="h-8 w-3/4" />
+              <Skeleton className="h-5 w-1/2" />
             </div>
-          ))}
 
-          <Skeleton className="h-10 w-24" />
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="space-y-2">
+                <Skeleton className="h-5 w-1/4" />
+                <Skeleton className="h-10 w-full" />
+              </div>
+            ))}
+
+            <Skeleton className="h-10 w-24" />
+          </div>
         </div>
+
       </div>
     );
   }
 
-  if (!form) return null;  
+  if (!form) return null;
 
   return (
     <FormPageLayout formId={formId}>

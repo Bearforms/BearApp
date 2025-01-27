@@ -3,9 +3,7 @@
 
 import sendMail from '@/lib/email';
 import { getCurrentUser } from '@/lib/session';
-import { createAdminClient } from '@/supabase/admin';
 import { createClient } from '@/supabase/server';
-import { revalidatePath } from 'next/cache';
 
 export const addWorkspaceMember = async ({ workspaceId, email, role }: { workspaceId: string, email: string, role: string; }) => {
 	const user = await getCurrentUser();
@@ -16,14 +14,14 @@ export const addWorkspaceMember = async ({ workspaceId, email, role }: { workspa
 	const supabase = await createClient();
 
 	// check if workspace exists
-	const { data: existingWorkspace } = await supabase.from('workspaces').select('id').eq('id', workspaceId).single();
+	const { data: existingWorkspace } = await supabase.from('workspaces').select('id, name').eq('id', workspaceId).single();
 	if (!existingWorkspace) {
 		throw new Error('Workspace not found');
 	}
 
 	// check if user exists
-	const { data: existingUser } = await supabase.from('profiles').select('id').eq('email', email).single();
-	
+	const { data: existingUser } = await supabase.from('profiles').select('*').eq('email', email).single();
+
 	if (!existingUser) {
 		// check if user is already invited
 		const { data: existingInvitation } = await supabase.from('workspace_invitations').select('id').eq('workspace_id', workspaceId).eq('email', email).single();
@@ -48,7 +46,7 @@ export const addWorkspaceMember = async ({ workspaceId, email, role }: { workspa
 			email,
 			subject: 'You have been invited to a workspace',
 			html: `
-				<p>You have been invited to join a workspace on Bearforms.</p>
+				<p>You have been invited to join workspace <b>${existingWorkspace.name}</b> on Bearforms.</p>
 				<p>Click <a href="${process.env.NEXT_PUBLIC_BASE_URL}/auth/signup">here</a> to create an account.</p>
 			`
 		});
@@ -56,31 +54,30 @@ export const addWorkspaceMember = async ({ workspaceId, email, role }: { workspa
 		if (!emailResponse.success) {
 			throw new Error('Error sending email');
 		}
-	} else {
-		console.log({ workspaceId, userId: user.id });
-		
-		// check if user is already a member
-		const { data: existingMember, error } = await supabase.from('workspace_members').select('workspace_id').eq('workspace_id', workspaceId).eq('user_id', existingUser.id).single();
 
-		console.log({ existingMember, error });
-		
+		return null;
+	} else {
+		// check if user is already a member
+		const { data: existingMember, error } = await supabase.from('workspace_members').select('workspace_id').eq('workspace_id', workspaceId).eq('user_id', existingUser.id).single()
 		if (existingMember) {
 			throw new Error('User is already a member');
 		}
 
 		// add user to workspace_members table
-		const { error: memberError } = await supabase.from('workspace_members').insert({
+		const { error: memberError, data } = await supabase.from('workspace_members').insert({
 			workspace_id: workspaceId,
 			user_id: existingUser.id,
-			role
-		});
+			role,
+			added_by: user.id
+		}).select().single();
 
 		if (memberError) {
 			console.log('Workspace member error:', memberError.message);
 			throw memberError;
 		}
 
-		revalidatePath('/app/[workspaceSlug]/settings', 'page');
+		return {...data, profile: existingUser};
 	}
+
 
 };

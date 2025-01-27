@@ -17,7 +17,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 export default function HomePage() {
   const [search, setSearch] = useState('');
   const [showNewFormModal, setShowNewFormModal] = useState(false);
-  const [isLoadingForms, setIsLoadingForms] = useState(false);
+  const [isLoadingForms, setIsLoadingForms] = useState(true);
   const forms = useFormStore((state) =>
     state.forms.filter((f) => !f.deletedAt)
   );

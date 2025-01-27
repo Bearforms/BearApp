@@ -14,9 +14,11 @@ interface WorkspaceInfoProps {
   workspace: Workspace;
 }
 
-export function WorkspaceInfo({ workspace }: WorkspaceInfoProps) {
+export function WorkspaceInfo({ workspace: workspaceData }: WorkspaceInfoProps) {
   const [isEditting, setIsEditting] = useState(false);
-  const [isPublic, setIsPublic] = useState(workspace?.is_public || false);
+  const [isPublic, setIsPublic] = useState(workspaceData?.is_public || false);
+
+  const [workspace, setWorkspace] = useState(workspaceData);
 
   const { mutate, isPending: isPendingUpdateStatus } = useMutation({
     mutationFn: updateWorkspacePublicStatus,
@@ -24,6 +26,10 @@ export function WorkspaceInfo({ workspace }: WorkspaceInfoProps) {
       setIsPublic(workspace?.is_public);
     }
   });
+
+  const onUpdateWorkspace = async (workspace: Workspace) => {
+    setWorkspace(workspace);
+  }
 
   const canUpdateWorkspace = true;
 
@@ -89,7 +95,12 @@ export function WorkspaceInfo({ workspace }: WorkspaceInfoProps) {
       </div>
 
       {
-        isEditting && <EditWorkspaceModal open={isEditting} onOpenChange={setIsEditting} workspace={workspace} />
+        isEditting && <EditWorkspaceModal
+          open={isEditting}
+          onOpenChange={setIsEditting}
+          workspace={workspace}
+          onUpdateWorkspace={onUpdateWorkspace}
+        />
       }
     </div>
   );

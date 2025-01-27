@@ -67,7 +67,8 @@ export async function POST(request: Request) {
 				slug: workspaceSlug,
 				subdomain: workspaceSlug,
 				owner_id: userId,
-				is_public: false
+				is_public: false,
+				updated_by: userId
 			})
 			.select()
 			.single();
@@ -138,6 +139,6 @@ export async function POST(request: Request) {
 		}
 
 		console.error('Signup error:', error);
-		return Response.json('Internal server error', { status: 500 });
+		return Response.json('Something went wrong. Please try again later', { status: 500 });
 	}
 }

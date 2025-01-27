@@ -4,7 +4,6 @@
 import { defaultThankYouSettings, defaultThemeSettings } from '@/lib/constants/theme-defaults';
 import { getCurrentUser } from '@/lib/session';
 import { createClient } from '@/supabase/server';
-import { revalidatePath } from 'next/cache';
 
 export const createForm = async ({ name, workspaceSlug }: { name: string, workspaceSlug: string; }) => {
 	const user = await getCurrentUser();
@@ -45,6 +44,5 @@ export const createForm = async ({ name, workspaceSlug }: { name: string, worksp
 	if (formError) {
 		throw formError;
 	}
-	revalidatePath('/app/[formSlug]', 'page');
 	return formData;
 };

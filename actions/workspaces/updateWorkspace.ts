@@ -3,7 +3,6 @@
 
 import { getCurrentUser } from '@/lib/session';
 import { createClient } from '@/supabase/server';
-import { revalidatePath } from 'next/cache';
 
 export const updateWorkspace = async ({ workspaceId, name, description }:{workspaceId: string, name: string, description: string}) => {
 	const user = await getCurrentUser();
@@ -35,6 +34,5 @@ export const updateWorkspace = async ({ workspaceId, name, description }:{worksp
 		throw workspaceError;
 	}
 
-	revalidatePath('/app/[workspaceSlug]/settings', 'page');
 	return workspaceData;
 };

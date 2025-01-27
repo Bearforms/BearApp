@@ -1,5 +1,3 @@
-'use client';
-
 import { PageSkeleton } from '@/components/skeletons/page-skeleton';
 import { HeaderSkeleton } from '@/components/skeletons/header-skeleton';
 import { Skeleton } from '@/components/ui/skeleton';

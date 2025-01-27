@@ -63,9 +63,12 @@ export function WorkspaceMembers({ workspace }: WorkspaceMembersProps) {
     onError: (error) => {
       setAddMemberError(error.message);
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       setShowInviteDialog(false);
       toast({ description: 'Member invited to workspace' });
+      if (data) {
+        setMembers((prev) => [...prev, data]);
+      }
     }
   });
 
@@ -87,7 +90,7 @@ export function WorkspaceMembers({ workspace }: WorkspaceMembersProps) {
     },
     onSuccess: (data) => {
       console.log(data);
-      
+
       toast({ description: 'Member deleted successfully!' });
       setMembers((prev) => prev.filter((m) => m.user_id !== data.user_id));
     }

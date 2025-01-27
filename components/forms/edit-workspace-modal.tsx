@@ -27,9 +27,10 @@ interface EditWorkspaceModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   workspace: Workspace;
+  onUpdateWorkspace: (workspace: Workspace) => void;
 }
 
-export function EditWorkspaceModal({workspace, open, onOpenChange }: EditWorkspaceModalProps) {
+export function EditWorkspaceModal({workspace, open, onOpenChange, onUpdateWorkspace }: EditWorkspaceModalProps) {
   const [name, setName] = useState(workspace.name ?? '');
   const [description, setDescription] = useState(workspace.description ?? '');
   const router = useRouter();
@@ -39,6 +40,8 @@ export function EditWorkspaceModal({workspace, open, onOpenChange }: EditWorkspa
     mutationFn: updateWorkspace,
     onSuccess: (data) => {
       onOpenChange(false);
+
+      onUpdateWorkspace(data);
       refetchWorkspaces();
     }
   });

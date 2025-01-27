@@ -13,12 +13,11 @@ export const getUserWorkspaces = async () => {
 
 	const { data } = await supabase.from('workspaces')
 		.select(`
-			*,
-			members:workspace_members!workspace_members_workspace_id_fkey (
-				user_id,
-				role
-			)
-		`)
-	
+				*,
+				workspace_members!inner (user_id)
+			`)
+		.eq('workspace_members.user_id', user!.id)
+		.neq('slug', '');
+
 	return data ?? [];
 };
