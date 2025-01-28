@@ -41,6 +41,7 @@ export const createForm = async ({ name, workspaceSlug }: { name: string, worksp
 		},
 		added_by: user.id,
 		workspace_id: existingWorkspace.id,
+		updated_by: user.id,
 	};
 
 	const { data: formData, error: formError } = await supabase.from('forms').insert(newForm).select().single();

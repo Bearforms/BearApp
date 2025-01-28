@@ -11,6 +11,7 @@ import { useMutation } from '@tanstack/react-query';
 import { getWorkspacesForm } from '@/actions/workspaces/getWorkspacesForm';
 import { Skeleton } from '@/components/ui/skeleton';
 import { HeaderSkeleton } from '@/components/skeletons/header-skeleton';
+import { useSession } from '@/hooks/use-session';
 
 export default function EditFormPage() {
 
@@ -21,6 +22,7 @@ export default function EditFormPage() {
   const updateFormOnStore = useFormStore((state) => state.updateForm);
   const setForm = useFormStore((state) => state.setForm);
   const form = useFormStore((state) => state.form);
+  const { user } = useSession();
 
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -62,7 +64,11 @@ export default function EditFormPage() {
   // Update form when data changes
   const handleUpdate = async (updates: any) => {
     if (form) {
-      await updateFormOnStore(form!.id, updates);
+      await updateFormOnStore(form!.id, {
+        ...updates,
+        lastUpdated: new Date().toISOString(),
+        updated_by: user?.id,
+      });
     }
   };
 

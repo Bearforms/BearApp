@@ -9,6 +9,7 @@ import { FormSettings } from '@/types/form';
 import { Textarea } from '@/components/ui/textarea';
 import { useFormStore } from '@/stores/form-store';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useSession } from '@/hooks/use-session';
 
 
 interface GeneralSettingsProps {
@@ -20,6 +21,7 @@ export function GeneralSettings({ formId, onClose }: GeneralSettingsProps) {
 
   const form = useFormStore((state) => state.form);
   const updateFormOnStore = useFormStore((state) => state.updateForm);
+  const { user } = useSession();
 
   const [settings, setSettings] = useState<FormSettings>({
     language: form?.formSettings?.language ?? 'english',
@@ -39,7 +41,11 @@ export function GeneralSettings({ formId, onClose }: GeneralSettingsProps) {
   const handleSettingChange = (key: keyof FormSettings, value: any) => {
     setSettings({ ...settings, [key]: value });
 
-    updateFormOnStore(formId, { formSettings: { ...settings, [key]: value } });
+    updateFormOnStore(formId, {
+      formSettings: { ...settings, [key]: value },
+      lastUpdated: new Date().toISOString(),
+      updated_by: user?.id,
+    });
   };
 
   return (

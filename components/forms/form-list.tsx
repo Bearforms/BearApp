@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useFormStore } from '@/stores/form-store';
 import { useResponseStore } from '@/stores/response-store';
@@ -34,7 +33,7 @@ export function FormList({ searchQuery, onNewForm }: FormListProps) {
   const forms = useFormStore((state) =>
     state.forms.filter((f) => !f.deletedAt)
   );
-  const {workspaceSlug} = useParams();
+  const { workspaceSlug } = useParams();
   const addForm = useFormStore((state) => state.addForm);
   const deleteForm = useFormStore((state) => state.deleteForm);
   const getFormResponses = useResponseStore((state) => state.getFormResponses);
@@ -95,7 +94,10 @@ export function FormList({ searchQuery, onNewForm }: FormListProps) {
         {filteredAndSortedForms.map((form) => {
           const responses = getFormResponses(form.id);
           const responseCount = responses.length;
-          const timeAgo = formatDistanceToNow(new Date(form.lastUpdated), {
+
+          const zonedDate = new Date(form.lastUpdated);
+          zonedDate.setHours(zonedDate.getHours() + 3);
+          const timeAgo = formatDistanceToNow(zonedDate, {
             addSuffix: true,
           });
 

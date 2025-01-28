@@ -109,4 +109,7 @@ export interface Form {
   responses: number;
   lastUpdated: string;
   deletedAt?: string;
+  added_by: string;
+  updated_by: string;
+  workspace_id: string;
 }
