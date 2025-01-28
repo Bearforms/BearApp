@@ -1,7 +1,8 @@
+import { FormSettings } from './../../types/form';
 
 "use server";
 
-import { defaultThankYouSettings, defaultThemeSettings } from '@/lib/constants/theme-defaults';
+import { defaultFormSettings, defaultThankYouSettings, defaultThemeSettings } from '@/lib/constants/theme-defaults';
 import { getCurrentUser } from '@/lib/session';
 import { createClient } from '@/supabase/server';
 
@@ -25,6 +26,9 @@ export const createForm = async ({ name, workspaceSlug }: { name: string, worksp
 		responses: 0,
 		lastUpdated: new Date().toISOString(),
 		fields: [],
+		formSettings: {
+			...defaultFormSettings,
+		},
 		themeSettings: {
 			...defaultThemeSettings,
 			coverType: 'color' as const,

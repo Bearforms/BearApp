@@ -29,3 +29,18 @@ export const defaultThankYouSettings = {
   buttonUrl: '',
   buttonStyle: 'outline' as const
 };
+
+export const defaultFormSettings = {
+  language: 'english',
+  showStepCount: false,
+  recapture: false,
+  requireLogin: false,
+  loginPassword: '',
+  enableReview: false,
+  stopResponses: false,
+  enableResponseLimit: false,
+  responseLimit: '',
+  expiryDate: '',
+  enableCloseFormMessage: false,
+  closeFormMessage: '',
+};

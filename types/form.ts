@@ -72,6 +72,21 @@ export interface ThemeSettings {
   logo?: string;
 }
 
+export interface FormSettings {
+  language: string;
+  showStepCount: boolean;
+  recapture: boolean;
+  requireLogin: boolean;
+  loginPassword: string;
+  enableReview: boolean;
+  stopResponses: boolean;
+  enableResponseLimit: boolean;
+  responseLimit: string;
+  expiryDate: string;
+  enableCloseFormMessage: boolean;
+  closeFormMessage: string;
+}
+
 export interface ThankYouSettings {
   heading: string;
   message: string;
@@ -87,6 +102,7 @@ export interface Form {
   title: string;
   description?: string;
   fields: FormField[];
+  formSettings: FormSettings;
   themeSettings?: ThemeSettings;
   buttonSettings?: ButtonSettings;
   thankYouSettings?: ThankYouSettings;

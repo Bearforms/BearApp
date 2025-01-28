@@ -10,13 +10,11 @@ import { ButtonSettings } from '@/types/button';
 import { useMutation } from '@tanstack/react-query';
 import { getWorkspacesForm } from '@/actions/workspaces/getWorkspacesForm';
 import { Skeleton } from '@/components/ui/skeleton';
-import { updateForm } from '@/actions/workspaces/updateForm';
 import { HeaderSkeleton } from '@/components/skeletons/header-skeleton';
 
 export default function EditFormPage() {
 
   const [isLoadingForms, setIsLoadingForm] = useState(false);
-  const [synced, setSynced] = useState(true);
 
   const params = useParams();
   const formId = params.id as string;
@@ -43,17 +41,6 @@ export default function EditFormPage() {
     }
   });
 
-  const { isPending: isPendingUpdate, mutate: mutateUpdate } = useMutation({
-    mutationFn: updateForm,
-    onSuccess: (data) => {
-      setIsLoadingForm(false);
-      setSynced(true);
-    },
-    onError: () => {
-      setIsLoadingForm(false);
-    }
-  });
-
   useEffect(() => {
     setForm(null);
     if (params?.workspaceSlug && formId) mutate({ workspaceSlug: params?.workspaceSlug as string, formId: formId as string });
@@ -74,7 +61,6 @@ export default function EditFormPage() {
 
   // Update form when data changes
   const handleUpdate = async (updates: any) => {
-    setSynced(false);
     if (form) {
       await updateFormOnStore(form!.id, updates);
     }
