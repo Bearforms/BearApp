@@ -86,7 +86,7 @@ export function FormNameMenu() {
             <MoreHorizontal className="h-4 w-4 text-neutral-500" strokeWidth={2} />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="start" className="w-52">
+        <DropdownMenuContent align="end" className="w-52">
           <DropdownMenuItem onClick={() => setIsRenaming(true)}>
             <PencilLine
               className="text-neutral-500 h-5 w-5 mr-2.5"
