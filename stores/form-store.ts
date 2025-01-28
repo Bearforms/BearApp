@@ -2,10 +2,11 @@
 
 import { create } from 'zustand';
 import { persist, subscribeWithSelector } from 'zustand/middleware';
-import { Form, ThemeSettings, ThankYouSettings } from '@/types/form';
+import { Form, ThemeSettings, ThankYouSettings, FormField } from '@/types/form';
 import { compressImage } from '@/lib/image-utils';
 import { defaultThemeSettings, defaultThankYouSettings } from '@/lib/constants/theme-defaults';
 import { createClient } from '@/supabase/client';
+import { usePopupStore } from './popup-store';
 
 interface SaveStatus {
   saving: boolean;
@@ -29,6 +30,13 @@ interface FormState {
   getForm: (id: string) => Form | undefined;
   getDeletedForms: () => Form[];
   updateResponseCount: (formId: string, count: number) => void;
+  selectedField: FormField | null;
+  setSelectedField: (field: FormField | null) => void;
+}
+
+function resetOpenPopup () {
+  const popupStore = usePopupStore.getState();
+  popupStore.resetAllPopups();
 }
 
 export const useFormStore = create<FormState>()(
@@ -42,6 +50,7 @@ export const useFormStore = create<FormState>()(
         error: null,
         isSaved: false,
       },
+      selectedField: null,
 
       initializeForms: forms => set({ forms }),
       setForm: form => set({ form }),
@@ -159,6 +168,10 @@ export const useFormStore = create<FormState>()(
         set((state) => ({
           saveStatus: { ...state.saveStatus, ...status },
         })),
+      setSelectedField: (field) => {
+        set({ selectedField: field });
+        if(field) resetOpenPopup();
+      },
     }),
     {
       name: 'form-storage',

@@ -1,3 +1,5 @@
+import { ButtonSettings } from '@/types/button';
+
 export const defaultThemeSettings = {
   colors: {
     primary: {
@@ -43,4 +45,11 @@ export const defaultFormSettings = {
   expiryDate: '',
   enableCloseFormMessage: false,
   closeFormMessage: '',
+};
+
+export const defaultButtonSettings: ButtonSettings = {
+  label: 'Submit',
+  size: 'default',
+  fullWidth: false,
+  variant: 'primary',
 };

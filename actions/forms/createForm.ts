@@ -2,7 +2,7 @@ import { FormSettings } from './../../types/form';
 
 "use server";
 
-import { defaultFormSettings, defaultThankYouSettings, defaultThemeSettings } from '@/lib/constants/theme-defaults';
+import { defaultButtonSettings, defaultFormSettings, defaultThankYouSettings, defaultThemeSettings } from '@/lib/constants/theme-defaults';
 import { getCurrentUser } from '@/lib/session';
 import { createClient } from '@/supabase/server';
 
@@ -38,6 +38,9 @@ export const createForm = async ({ name, workspaceSlug }: { name: string, worksp
 		},
 		thankYouSettings: {
 			...defaultThankYouSettings,
+		},
+		buttonSettings: {
+			...defaultButtonSettings
 		},
 		added_by: user.id,
 		workspace_id: existingWorkspace.id,

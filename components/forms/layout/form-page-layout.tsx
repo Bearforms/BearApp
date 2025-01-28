@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { Sidebar } from '@/components/layout/sidebar';
 import { FormHeader } from '@/components/forms/navigation/form-header';
 import { ThemeSettings } from '@/components/forms/settings/theme-settings';
 import { ShareSettings } from '@/components/forms/settings/share-settings';
@@ -16,6 +15,7 @@ import {
 } from "@/components/ui/tabs";
 import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
+import { usePopupStore } from '@/stores/popup-store';
 
 interface FormPageLayoutProps {
   formId: string;
@@ -25,10 +25,11 @@ interface FormPageLayoutProps {
 export function FormPageLayout({ formId, children }: FormPageLayoutProps) {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
-  const [openAction, setOpenAction] = useState<"themeSettings" | "share" | "settings" | null>(null);
+  const openedHeaderPopup = usePopupStore(state=>state.openedHeaderPopup)
+  const setOpenHeaderPopup = usePopupStore(state=>state.setOpenHeaderPopup)
 
   const handleOpenAction = (action: "themeSettings" | "share" | "settings" | null) => {
-    setOpenAction(action);
+    setOpenHeaderPopup(action);
   };
 
   const form = useFormStore((state) => state.form);
@@ -45,7 +46,7 @@ export function FormPageLayout({ formId, children }: FormPageLayoutProps) {
       <div className="flex-1 overflow-hidden relative">
         {children}
 
-        {openAction === "themeSettings" && (
+        {openedHeaderPopup === "themeSettings" && (
           <div className="absolute top-5 bottom-5 right-5 w-[340px] rounded-md border-[0.5px] border-neutral-200 shadow-lg bg-white overflow-hidden">
             <ThemeSettings
               settings={form.themeSettings}
@@ -59,7 +60,7 @@ export function FormPageLayout({ formId, children }: FormPageLayoutProps) {
           </div>
         )}
 
-        {openAction === "share" && (
+        {openedHeaderPopup === "share" && (
           <div className="absolute top-5 bottom-5 right-5 w-[340px] rounded-md border-[0.5px] border-neutral-200 shadow-lg bg-white overflow-hidden">
             <ShareSettings
               formId={formId}
@@ -68,7 +69,7 @@ export function FormPageLayout({ formId, children }: FormPageLayoutProps) {
           </div>
         )}
 
-        {openAction === "settings" && (
+        {openedHeaderPopup === "settings" && (
           <div className="absolute top-5 bottom-5 right-5 w-[340px] flex flex-col rounded-md border-[0.5px] border-neutral-200 shadow-lg bg-white overflow-hidden">
             <div className="flex items-center justify-between h-[52px] p-4">
               <div className="text-base font-medium">Form settings</div>

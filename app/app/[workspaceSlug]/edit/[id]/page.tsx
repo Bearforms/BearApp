@@ -48,7 +48,7 @@ export default function EditFormPage() {
     if (params?.workspaceSlug && formId) mutate({ workspaceSlug: params?.workspaceSlug as string, formId: formId as string });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mutate, params?.workspaceSlug, formId]);
-
+  
   // Load form data when component mounts or form changes
   useEffect(() => {
     if (form) {
