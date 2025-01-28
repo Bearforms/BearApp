@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { FormField, ThankYouSettings, ThemeSettings } from '@/types/form';
 import { Settings2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useFormStore } from '@/stores/form-store';
 
 interface ThankYouPreviewProps {
   settings: ThankYouSettings;
@@ -22,6 +23,25 @@ export function ThankYouPreview({
   themeSettings,
 }: ThankYouPreviewProps) {
   const [isHovered, setIsHovered] = useState(false);
+
+  const form = useFormStore(state => state.form);
+
+  const primaryColor = form?.themeSettings?.colors?.text ?? "#f3f4f6";
+
+  const getRGBA = () => {
+    const r = parseInt(primaryColor.slice(1, 3), 16);
+    const g = parseInt(primaryColor.slice(3, 5), 16);
+    const b = parseInt(primaryColor.slice(5, 7), 16);
+    return `rgba(${r}, ${g}, ${b}, ${.10})`;
+  };
+  const hoverStyles = `
+        .hover-preview:hover,
+        .hover-preview:focus,
+        .hover-preview:active
+        {
+          background-color: ${getRGBA()};
+        }
+      `;
 
   const headingField = {
     id: 'thank-you-heading',
@@ -41,61 +61,64 @@ export function ThankYouPreview({
   };
 
   return (
-    <div
-      className={cn(
-        'group relative rounded-md transition-colors p-4 mt-8',
-        !preview && 'hover:bg-[hsl(var(--muted))]'
-      )}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      {!preview && (
-        <div
-          className={cn(
-            'absolute -top-9 right-0 opacity-0 transition-opacity bg-white border-[0.5px] border-neutral-200 shadow-sm rounded-md overflow-hidden p-0',
-            'group-hover:opacity-100'
-          )}
-        >
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-8 w-8 p-0 rounded-none"
-            onClick={onEdit}
+    <>
+      <style>{hoverStyles}</style>
+      <div
+        className={cn(
+          'group relative rounded-md transition-colors p-4 mt-8',
+          !preview && 'hover-preview',
+        )}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        {!preview && (
+          <div
+            className={cn(
+              'absolute -top-9 right-0 opacity-0 transition-opacity bg-white border-[0.5px] border-neutral-200 shadow-sm rounded-md overflow-hidden p-0',
+              'group-hover:opacity-100'
+            )}
           >
-            <Settings2 className="h-5 w-5 text-neutral-500" />
-          </Button>
-        </div>
-      )}
-
-      <div className="space-y-6">
-        <div className="space-y-4">
-          <div className="thank-you-heading">
-            <HeadingField
-              field={headingField as FormField}
-              preview
-              headingFont={themeSettings?.fonts?.heading}
-            />
-          </div>
-          <div className="thank-you-description">
-            <ParagraphField field={paragraphField} preview />
-          </div>
-          {settings.showButton && (
             <Button
-              variant={settings.buttonStyle || 'primary'}
-              className={cn(
-                'rounded-[var(--form-radius)] border border-[var(--form-border)] bg-[var(--form-background)] text-[var(--form-text-primary)] form-body'
-              )}
-              onClick={() => {
-                if (settings.buttonUrl && !preview) {
-                  window.open(settings.buttonUrl, '_blank');
-                }
-              }}
+              variant="ghost"
+              size="sm"
+              className="h-8 w-8 p-0 rounded-none"
+              onClick={onEdit}
             >
-              {settings.buttonText}
+              <Settings2 className="h-5 w-5 text-neutral-500" />
             </Button>
-          )}
+          </div>
+        )}
+
+        <div className="space-y-6">
+          <div className="space-y-4">
+            <div className="thank-you-heading">
+              <HeadingField
+                field={headingField as FormField}
+                preview
+                headingFont={themeSettings?.fonts?.heading}
+              />
+            </div>
+            <div className="thank-you-description">
+              <ParagraphField field={paragraphField} preview />
+            </div>
+            {settings.showButton && (
+              <Button
+                variant={settings.buttonStyle || 'primary'}
+                className={cn(
+                  'rounded-[var(--form-radius)] border border-[var(--form-border)] bg-[var(--form-background)] text-[var(--form-text-primary)] form-body'
+                )}
+                onClick={() => {
+                  if (settings.buttonUrl && !preview) {
+                    window.open(settings.buttonUrl, '_blank');
+                  }
+                }}
+              >
+                {settings.buttonText}
+              </Button>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

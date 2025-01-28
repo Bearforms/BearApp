@@ -23,19 +23,14 @@ export function FieldContainer({
 
   const form = useFormStore(state => state.form);
 
-  const primaryColor = form?.themeSettings?.colors?.primary?.value ?? "#f3f4f6";
-
-  console.log(form?.themeSettings);
+  const primaryColor = form?.themeSettings?.colors?.text ?? "#f3f4f6";
   
   const getRGBA = () => {
     const r = parseInt(primaryColor.slice(1, 3), 16);
     const g = parseInt(primaryColor.slice(3, 5), 16);
     const b = parseInt(primaryColor.slice(5, 7), 16);
-    return `rgba(${r}, ${g}, ${b}, ${.15})`;
+    return `rgba(${r}, ${g}, ${b}, ${.10})`;
   };
-
-  console.log(primaryColor);
-
   const hoverStyles = `
     .hover-preview:hover,
     .hover-preview:focus,
