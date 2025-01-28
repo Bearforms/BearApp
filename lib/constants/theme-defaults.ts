@@ -1,3 +1,5 @@
+import { ButtonSettings } from '@/types/button';
+
 export const defaultThemeSettings = {
   colors: {
     primary: {
@@ -28,4 +30,26 @@ export const defaultThankYouSettings = {
   buttonText: 'Continue',
   buttonUrl: '',
   buttonStyle: 'outline' as const
+};
+
+export const defaultFormSettings = {
+  language: 'english',
+  showStepCount: false,
+  recapture: false,
+  requireLogin: false,
+  loginPassword: '',
+  enableReview: false,
+  stopResponses: false,
+  enableResponseLimit: false,
+  responseLimit: '',
+  expiryDate: '',
+  enableCloseFormMessage: false,
+  closeFormMessage: '',
+};
+
+export const defaultButtonSettings: ButtonSettings = {
+  label: 'Submit',
+  size: 'default',
+  fullWidth: false,
+  variant: 'primary',
 };

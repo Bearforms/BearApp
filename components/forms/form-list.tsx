@@ -1,7 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useFormStore } from '@/stores/form-store';
 import { useResponseStore } from '@/stores/response-store';
 import { Button } from '@/components/ui/button';
@@ -34,6 +33,7 @@ export function FormList({ searchQuery, onNewForm }: FormListProps) {
   const forms = useFormStore((state) =>
     state.forms.filter((f) => !f.deletedAt)
   );
+  const { workspaceSlug } = useParams();
   const addForm = useFormStore((state) => state.addForm);
   const deleteForm = useFormStore((state) => state.deleteForm);
   const getFormResponses = useResponseStore((state) => state.getFormResponses);
@@ -94,7 +94,10 @@ export function FormList({ searchQuery, onNewForm }: FormListProps) {
         {filteredAndSortedForms.map((form) => {
           const responses = getFormResponses(form.id);
           const responseCount = responses.length;
-          const timeAgo = formatDistanceToNow(new Date(form.lastUpdated), {
+
+          const zonedDate = new Date(form.lastUpdated);
+          zonedDate.setHours(zonedDate.getHours() + 3);
+          const timeAgo = formatDistanceToNow(zonedDate, {
             addSuffix: true,
           });
 
@@ -104,8 +107,8 @@ export function FormList({ searchQuery, onNewForm }: FormListProps) {
               className="group flex space-x-2 p-2 pr-3 items-center relative bg-white rounded-md border border-neutral-200 hover:border-neutral-300 transition-colors"
             >
               <div
-                className="h-16 w-16 flex rounded-full items-center justify-center relative cursor-pointer bg-neutral-50 p-0  rounded-md overflow-hidden"
-                onClick={() => router.push(`/edit/${form.id}`)}
+                className="h-16 w-16 flex items-center justify-center relative cursor-pointer bg-neutral-50 p-0  rounded-md overflow-hidden"
+                onClick={() => router.push(`/app/${workspaceSlug}/edit/${form.id}`)}
               >
                 <FileText className="h-6 w-6 text-neutral-400" />
               </div>
@@ -114,7 +117,7 @@ export function FormList({ searchQuery, onNewForm }: FormListProps) {
                   <div className="flex items-start justify-between">
                     <h3
                       className="text-base font-medium text-neutral-900 cursor-pointer"
-                      onClick={() => router.push(`/edit/${form.id}`)}
+                      onClick={() => router.push(`/app/${workspaceSlug}/edit/${form.id}`)}
                     >
                       {form.name}
                     </h3>
@@ -137,7 +140,7 @@ export function FormList({ searchQuery, onNewForm }: FormListProps) {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-52">
                       <DropdownMenuItem
-                        onClick={() => router.push(`/edit/${form.id}`)}
+                        onClick={() => router.push(`/app/${workspaceSlug}/edit/${form.id}`)}
                       >
                         <FileEdit
                           className="text-neutral-500 h-5 w-5 mr-2.5"

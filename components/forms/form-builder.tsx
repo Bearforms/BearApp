@@ -1,10 +1,9 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useRef } from 'react';
 import { FormTitle } from './form-title';
 import { FormDescription } from './form-description';
 import { FormFieldSettings } from './settings/field-settings/field-settings';
-import { ThemeSettings } from './settings/theme-settings';
 import { FormLogo } from './form-logo';
 import { ButtonSettings } from './settings/button-settings';
 import { ThankYouSettings } from './settings/thank-you-settings';
@@ -15,19 +14,12 @@ import {
   ThankYouSettings as ThankYouSettingsType,
   ThemeSettings as ThemeSettingsType,
 } from '@/types/form';
-import { useFormTheme } from '@/hooks/use-form-theme';
 import { useGoogleFonts } from '@/hooks/use-google-fonts';
 import { FormContent } from './form-builder/form-content';
 import { useFormStyles } from './form-builder/use-form-styles';
-import { defaultThemeSettings, defaultThankYouSettings } from '@/lib/constants/theme-defaults';
-
-const defaultButtonSettings: ButtonSettingsType = {
-  label: 'Submit',
-  size: 'default',
-  fullWidth: false,
-  variant: 'primary',
-};
-
+import { defaultThemeSettings, defaultThankYouSettings, defaultButtonSettings } from '@/lib/constants/theme-defaults';
+import { usePopupStore } from '@/stores/popup-store';
+import { useFormStore } from '@/stores/form-store';
 interface FormBuilderProps {
   isThemeSettingsOpen: boolean;
   onThemeSettingsOpenChange: (open: boolean) => void;
@@ -71,17 +63,24 @@ export function FormBuilder({
   thankYouSettings = defaultThankYouSettings,
   onThankYouSettingsChange,
 }: FormBuilderProps) {
-  const [selectedField, setSelectedField] = useState<FormField | null>(null);
-  const [showButtonSettings, setShowButtonSettings] = useState(false);
-  const [showThankYouSettings, setShowThankYouSettings] = useState(false);
-  const formBuilderRef = useRef<HTMLDivElement>(null);
   
+  const formBuilderRef = useRef<HTMLDivElement>(null);  
+
+  const thankYouPopupOpen = usePopupStore(state => state.thankYouPopupOpen);
+  const setThankYouPopupOpen = usePopupStore(state => state.setThankYouPopupOpen);
+
+  const buttonSettingsPopupOpen = usePopupStore(state => state.buttonSettingsPopupOpen);
+  const setButtonSettingsPopupOpen = usePopupStore(state => state.setButtonSettingsPopupOpen);
+  
+  const selectedField = useFormStore(state => state.selectedField);
+  const setSelectedField = useFormStore(state => state.setSelectedField);
+
   // Merge theme settings with defaults
   const mergedThemeSettings = {
     ...defaultThemeSettings,
     ...themeSettings
   };
-  
+
   const { styles } = useFormStyles(mergedThemeSettings);
 
   // Load Google Fonts
@@ -129,11 +128,11 @@ export function FormBuilder({
             className={cn(
               'max-w-[640px] mx-auto px-5 pb-12 relative',
               mergedThemeSettings?.showLogo &&
-                mergedThemeSettings?.coverType !== 'none' &&
-                'pt-24',
+              mergedThemeSettings?.coverType !== 'none' &&
+              'pt-24',
               mergedThemeSettings?.showLogo &&
-                mergedThemeSettings?.coverType === 'none' &&
-                'pt-52',
+              mergedThemeSettings?.coverType === 'none' &&
+              'pt-52',
               !mergedThemeSettings?.showLogo && 'pt-16'
             )}
           >
@@ -165,15 +164,15 @@ export function FormBuilder({
 
             <FormContent
               fields={fields}
-              onFieldsChange={onFieldsChange || (() => {})}
+              onFieldsChange={onFieldsChange || (() => { })}
               selectedFieldId={selectedField?.id}
               onFieldSelect={setSelectedField}
               buttonSettings={buttonSettings}
               onButtonSettingsChange={onButtonSettingsChange}
-              onButtonSettingsOpen={() => setShowButtonSettings(true)}
+              onButtonSettingsOpen={() => setButtonSettingsPopupOpen(true)}
               themeSettings={mergedThemeSettings}
               thankYouSettings={thankYouSettings}
-              onThankYouSettingsOpen={() => setShowThankYouSettings(true)}
+              onThankYouSettingsOpen={() => setThankYouPopupOpen(true)}
             />
           </div>
         </div>
@@ -198,24 +197,24 @@ export function FormBuilder({
         </div>
       )}
 
-      {showButtonSettings && (
+      {buttonSettingsPopupOpen && (
         <div className="absolute top-5 bottom-5 right-5 w-[340px] rounded-md border-[0.5px] border-neutral-200 shadow-lg bg-white overflow-hidden">
           <ButtonSettings
             settings={buttonSettings}
             onSettingsChange={onButtonSettingsChange as any}
-            open={showButtonSettings}
-            onOpenChange={setShowButtonSettings}
+            open={buttonSettingsPopupOpen}
+            onOpenChange={state=>setButtonSettingsPopupOpen(state)}
             themeSettings={mergedThemeSettings}
           />
         </div>
       )}
 
-      {showThankYouSettings && (
+      {thankYouPopupOpen && (
         <div className="absolute top-5 bottom-5 right-5 w-[340px] rounded-md border-[0.5px] border-neutral-200 shadow-lg bg-white overflow-hidden">
           <ThankYouSettings
             settings={thankYouSettings}
             onSettingsChange={onThankYouSettingsChange as any}
-            onClose={() => setShowThankYouSettings(false)}
+            onClose={() => setThankYouPopupOpen(false)}
             themeSettings={mergedThemeSettings}
           />
         </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useFormStore } from '@/stores/form-store';
 import { Button } from '@/components/ui/button';
 import {
@@ -11,6 +11,7 @@ import {
   Link,
   FileSymlink,
   Trash2,
+  MoreHorizontal,
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -20,21 +21,14 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { FormRenameDialog } from './rename/form-rename-dialog';
 import { toast } from '@/hooks/use-toast';
-import { cn } from '@/lib/utils';
 
-interface FormNameMenuProps {
-  formId: string;
-  name: string;
-}
 
-export function FormNameMenu({ formId, name }: FormNameMenuProps) {
+export function FormNameMenu() {
   const router = useRouter();
   const [isRenaming, setIsRenaming] = useState(false);
-  const [newName, setNewName] = useState(name);
 
-  const form = useFormStore((state) =>
-    state.forms.find((f) => f.id === formId)
-  );
+  const form = useFormStore((state) =>state.form);
+  const params = useParams();
   const updateForm = useFormStore((state) => state.updateForm);
   const addForm = useFormStore((state) => state.addForm);
   const deleteForm = useFormStore((state) => state.deleteForm);
@@ -43,7 +37,7 @@ export function FormNameMenu({ formId, name }: FormNameMenuProps) {
 
   const handleRename = async (newName: string) => {
     if (newName.trim()) {
-      await updateForm(formId, {
+      await updateForm(form.id, {
         name: newName.trim(),
         lastUpdated: new Date().toISOString(),
       });
@@ -62,39 +56,37 @@ export function FormNameMenu({ formId, name }: FormNameMenuProps) {
     };
     addForm(duplicatedForm);
     toast({ description: 'Form duplicated' });
-    router.push(`/edit/${duplicatedForm.id}`);
+    router.push(`/app/${params?.workspaceSlug}/edit/${duplicatedForm.id}`);
   };
 
   const handleDelete = () => {
-    deleteForm(formId);
+    deleteForm(form.id);
     toast({ description: 'Form moved to trash' });
-    router.push('/');
+    router.push(`/app/${params?.workspaceSlug}`);
   };
 
   const handleCopyLink = async () => {
     try {
-      const formUrl = `${window.location.origin}/form/${formId}`;
+      const formUrl = `${window.location.origin}/form/${form.id}`;
       await navigator.clipboard.writeText(formUrl);
       toast({ description: 'Form link copied to clipboard' });
     } catch (error) {
       toast({
         title: 'Error',
         description: 'Failed to copy link',
-        // variant: 'destructive',
       });
     }
   };
 
   return (
     <>
-      <span className="text-sm truncate">{name}</span>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="icon" className="ml-1 h-8 w-8">
-            <ChevronDown className="h-4 w-4 text-neutral-500" strokeWidth={2} />
+            <MoreHorizontal className="h-4 w-4 text-neutral-500" strokeWidth={2} />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="start" className="w-52">
+        <DropdownMenuContent align="end" className="w-52">
           <DropdownMenuItem onClick={() => setIsRenaming(true)}>
             <PencilLine
               className="text-neutral-500 h-5 w-5 mr-2.5"
@@ -126,7 +118,7 @@ export function FormNameMenu({ formId, name }: FormNameMenuProps) {
       <FormRenameDialog
         open={isRenaming}
         onOpenChange={setIsRenaming}
-        initialName={name}
+        initialName={form.name}
         onRename={handleRename}
       />
     </>

@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/select';
 import { ButtonSettings as ButtonSettingsType } from '@/types/button';
 import { PanelLayout } from './panel-layout';
+import { defaultButtonSettings } from '@/lib/constants/theme-defaults';
 
 interface ButtonSettingsProps {
   settings?: ButtonSettingsType;
@@ -21,20 +22,16 @@ interface ButtonSettingsProps {
   themeSettings?: any;
 }
 
-const defaultSettings: ButtonSettingsType = {
-  label: 'Submit',
-  size: 'default',
-  fullWidth: false,
-  variant: 'default',
-};
-
 export function ButtonSettings({
-  settings = defaultSettings,
+  settings = defaultButtonSettings,
   onSettingsChange,
   open,
   onOpenChange,
   themeSettings,
 }: ButtonSettingsProps) {
+
+  settings = settings || defaultButtonSettings;
+
   return (
     <PanelLayout
       title="Button Settings"

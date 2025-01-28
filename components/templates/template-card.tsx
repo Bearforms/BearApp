@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useFormStore } from '@/stores/form-store';
 import { Button } from '@/components/ui/button';
 import { nanoid } from 'nanoid';
@@ -32,6 +32,7 @@ export function TemplateCard({ template }: TemplateCardProps) {
   const router = useRouter();
   const addForm = useFormStore((state) => state.addForm);
   const [showPreview, setShowPreview] = useState(false);
+  const params = useParams();
 
   const handleUseTemplate = () => {
     const newForm = {
@@ -52,7 +53,7 @@ export function TemplateCard({ template }: TemplateCardProps) {
     };
 
     addForm(newForm as Form);
-    router.push(`/edit/${newForm.id}`);
+    router.push(`/app/${params?.workspaceSlug}/edit/${newForm.id}`);
   };
 
   const category = templateCategories.find((c) => c.id === template.categoryId);

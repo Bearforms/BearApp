@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import { Upload, Image as ImageIcon } from 'lucide-react';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { ColorPicker } from './color-picker';
+import { UploadImageModal } from '../../upload-image-popup';
 
 interface CoverSettingsProps {
   coverType: 'none' | 'color' | 'image';
@@ -30,12 +31,13 @@ export function CoverSettings({
   onCoverImageChange,
   isUploading,
 }: CoverSettingsProps) {
-  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [isImageCoverUploadOpen, setIsImageCoverUploadOpen] = useState(false);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       <div className="space-y-2">
-        <Label className="font-normal">Cover type</Label>
+        <Label className="font-normal">Cover</Label>
         <Select value={coverType} onValueChange={onCoverTypeChange}>
           <SelectTrigger>
             <SelectValue placeholder="Select cover type" />
@@ -63,25 +65,11 @@ export function CoverSettings({
             <Button
               variant="outline"
               className="flex-1"
-              onClick={() => fileInputRef.current?.click()}
+              onClick={() => setIsImageCoverUploadOpen(true)}
               disabled={isUploading}
             >
               <Upload className="h-4 w-4 mr-2" />
-              Upload
-            </Button>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/*"
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                if (file) onCoverImageChange(file);
-              }}
-              className="hidden"
-            />
-            <Button variant="outline" className="flex-1">
-              <ImageIcon className="h-4 w-4 mr-2" />
-              Unsplash
+              Upload cover image
             </Button>
           </div>
           <p className="text-sm text-muted-foreground">
@@ -89,6 +77,12 @@ export function CoverSettings({
           </p>
         </div>
       )}
+
+      {
+        isImageCoverUploadOpen && (
+          <UploadImageModal open={isImageCoverUploadOpen} onOpenChange={setIsImageCoverUploadOpen} />
+        )
+      }
     </div>
   );
 }

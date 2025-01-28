@@ -26,8 +26,8 @@ export async function POST(request: Request) {
 
 		if (userError) {
 			console.log('User error:', userError.message);
-			
-			return Response.json('Failed to create user account', { status: 400 });
+
+			return Response.json(userError.message, { status: 400 });
 		}
 
 		const userId = userData.user.id;
@@ -44,7 +44,7 @@ export async function POST(request: Request) {
 
 		if (initError) {
 			console.log('Profile error:', initError.message);
-			
+
 			await supabase.auth.admin.deleteUser(userId);
 			return Response.json('Failed to create user profile', { status: 400 });
 		}
@@ -65,15 +65,17 @@ export async function POST(request: Request) {
 			.insert({
 				name: workspaceName,
 				slug: workspaceSlug,
+				subdomain: workspaceSlug,
 				owner_id: userId,
-				is_public: false
+				is_public: false,
+				updated_by: userId
 			})
 			.select()
 			.single();
 
 		if (workspaceError) {
 			console.log('Workspace error:', workspaceError.message);
-			
+
 			await supabase.auth.admin.deleteUser(userId);
 			await supabase.from('profiles').delete().match({ id: userId });
 			return Response.json('Failed to create workspace', { status: 400 });
@@ -85,7 +87,8 @@ export async function POST(request: Request) {
 			.insert({
 				workspace_id: workspaceData.id,
 				user_id: userId,
-				role: 'owner'
+				role: 'owner',
+				added_by: userId
 			});
 
 		if (memberError) {
@@ -93,6 +96,23 @@ export async function POST(request: Request) {
 			await supabase.from('profiles').delete().match({ id: userId });
 			await supabase.from('workspaces').delete().match({ id: workspaceData.id });
 			return Response.json('Failed to create workspace membership', { status: 400 });
+		}
+
+		// check if user has invitations
+		const { data: existingInvitations } = await supabase.from('workspace_invitations').select('workspace_id,role,invited_by').eq('email', validatedData.email);
+		if (existingInvitations && existingInvitations.length > 0) {
+			// add user to workspace_members table
+			const { error: memberError } = await supabase.from('workspace_members').insert(existingInvitations.map(invitation => ({
+				workspace_id: invitation.workspace_id,
+				user_id: userId,
+				role: invitation.role,
+				added_by: invitation.invited_by
+			})));
+			console.log('Workspace member error:', memberError?.message);
+			if (!memberError) {
+
+				await supabase.from('workspace_invitations').delete().eq('email', validatedData.email);
+			}
 		}
 
 		return Response.json(
@@ -119,6 +139,6 @@ export async function POST(request: Request) {
 		}
 
 		console.error('Signup error:', error);
-		return Response.json('Internal server error', { status: 500 });
+		return Response.json('Something went wrong. Please try again later', { status: 500 });
 	}
 }

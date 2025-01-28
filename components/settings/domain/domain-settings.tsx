@@ -1,10 +1,14 @@
 'use client';
 
+import { Workspace } from '@/types/supabase';
 import { DomainInfo } from './domain-info';
 import { DomainVerification } from './domain-verification';
 import { Separator } from '@/components/ui/separator';
 
-export function DomainSettings() {
+interface DomainSettingsProps {
+  workspace: Workspace;
+}
+export function DomainSettings({ workspace }: DomainSettingsProps) {
   return (
     <div className="space-y-10">
       <div>
@@ -15,7 +19,7 @@ export function DomainSettings() {
       </div>
 
       <div>
-        <DomainInfo />
+        <DomainInfo workspace={workspace} />
       </div>
 
       <Separator />
