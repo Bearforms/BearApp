@@ -139,33 +139,28 @@ export function ThemeSettings({
       onClose={onClose}
       themeSettings={mergedSettings}
     >
-      <div>
-        <SectionTitle description="Customize the header area of your form">
-          Header
-        </SectionTitle>
-        <div className="mt-4 space-y-6">
-          <CoverSettings
-            coverType={mergedSettings.coverType}
-            coverColor={mergedSettings.coverColor}
-            onCoverTypeChange={(type) =>
-              onSettingsChange?.({ ...mergedSettings, coverType: type })
-            }
-            onCoverColorChange={(color) =>
-              onSettingsChange?.({ ...mergedSettings, coverColor: color })
-            }
-            onCoverImageChange={(file) => handleFileUpload(file, 'cover')}
-            isUploading={isUploading}
-          />
+      <div className="space-y-6">
+        <CoverSettings
+          coverType={mergedSettings.coverType}
+          coverColor={mergedSettings.coverColor}
+          onCoverTypeChange={(type) =>
+            onSettingsChange?.({ ...mergedSettings, coverType: type })
+          }
+          onCoverColorChange={(color) =>
+            onSettingsChange?.({ ...mergedSettings, coverColor: color })
+          }
+          onCoverImageChange={(file) => handleFileUpload(file, 'cover')}
+          isUploading={isUploading}
+        />
 
-          <LogoSettings
-            showLogo={mergedSettings.showLogo}
-            onShowLogoChange={(show) =>
-              onSettingsChange?.({ ...mergedSettings, showLogo: show })
-            }
-            onLogoChange={(file) => handleFileUpload(file, 'logo')}
-            isUploading={isUploading}
-          />
-        </div>
+        <LogoSettings
+          showLogo={mergedSettings.showLogo}
+          onShowLogoChange={(show) =>
+            onSettingsChange?.({ ...mergedSettings, showLogo: show })
+          }
+          onLogoChange={(file) => handleFileUpload(file, 'logo')}
+          isUploading={isUploading}
+        />
       </div>
 
       <div className="mt-4 space-y-6">
@@ -180,7 +175,7 @@ export function ThemeSettings({
             handleColorChange('background', color)
           }
           onTextColorChange={(color) => handleColorChange('text', color)}
-          onTextSecondaryColorChange={(color) => 
+          onTextSecondaryColorChange={(color) =>
             handleColorChange('textSecondary', color)
           }
           onBorderColorChange={(color) => handleColorChange('border', color)}

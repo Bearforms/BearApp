@@ -23,7 +23,7 @@ interface FormState {
   initializeForms: (forms: Form[]) => void,
   setForm: (form: Form | null) => void,
   addForm: (form: Form) => void;
-  updateForm: (id: string, updates: Partial<Form>) => Promise<boolean>;
+  updateForm: (id: string, updates: Partial<Form>, processImage?: boolean) => Promise<boolean>;
   deleteForm: (id: string) => void;
   restoreForm: (id: string) => void;
   permanentlyDeleteForm: (id: string) => void;
@@ -34,7 +34,7 @@ interface FormState {
   setSelectedField: (field: FormField | null) => void;
 }
 
-function resetOpenPopup () {
+function resetOpenPopup() {
   const popupStore = usePopupStore.getState();
   popupStore.resetAllPopups();
 }
@@ -61,7 +61,7 @@ export const useFormStore = create<FormState>()(
             form,
           ],
         })),
-      updateForm: async (id, updates) => {
+      updateForm: async (id, updates, processImage = true) => {
         try {
           let processedUpdates = {
             ...updates,
@@ -85,7 +85,7 @@ export const useFormStore = create<FormState>()(
 
           // Process image uploads
           if (updates.themeSettings?.coverImage) {
-            const compressed = await compressImage(
+            const compressed = !processImage ? updates.themeSettings.coverImage : await compressImage(
               updates.themeSettings.coverImage,
               800,
               600,
@@ -170,7 +170,7 @@ export const useFormStore = create<FormState>()(
         })),
       setSelectedField: (field) => {
         set({ selectedField: field });
-        if(field) resetOpenPopup();
+        if (field) resetOpenPopup();
       },
     }),
     {
